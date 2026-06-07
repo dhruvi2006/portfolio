@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { FloatingProfile } from "@/components/floating-profile";
+import { InteractiveDotBackground } from "@/components/interactive-dot-background";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollProvider } from "@/components/scroll-context";
 import { Toaster } from "sonner";
@@ -56,21 +57,24 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <ThemeProvider>
-          <ScrollProvider>
-            <Nav />
-            <FloatingProfile />
-            {children}
-          </ScrollProvider>
-        </ThemeProvider>
-        <Toaster
-          position="bottom-right"
-          richColors
-          closeButton
-          toastOptions={{
-            duration: 4000,
-          }}
-        />
+        <InteractiveDotBackground />
+        <div className="relative z-[1]">
+          <ThemeProvider>
+            <ScrollProvider>
+              <Nav />
+              <FloatingProfile />
+              {children}
+            </ScrollProvider>
+          </ThemeProvider>
+          <Toaster
+            position="bottom-right"
+            richColors
+            closeButton
+            toastOptions={{
+              duration: 4000,
+            }}
+          />
+        </div>
       </body>
     </html>
   );

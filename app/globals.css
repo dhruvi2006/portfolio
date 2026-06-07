@@ -34,12 +34,24 @@ html.dark {
 }
 
 body {
-  background: var(--color-background);
+  background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Subtle ambient glow overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(37, 99, 235, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 60%);
 }
 
 /* Dark mode variable overrides */
@@ -51,6 +63,12 @@ body {
   --color-card: var(--color-dark-card);
   --color-muted: #1a1a1a;
   --color-accent-light: #1a2744;
+}
+
+.dark body::before {
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(59, 130, 246, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
 }
 
 .dark ::selection {
