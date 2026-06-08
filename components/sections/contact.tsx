@@ -3,47 +3,68 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { IoMailOutline, IoLocationOutline, IoCallOutline, IoSendOutline, IoCheckmarkCircleOutline, IoLogoLinkedin, IoLogoGithub, IoAlertCircleOutline } from "react-icons/io5";
-import { Button } from "@/components/ui/button";
+import {
+  IoMailOutline,
+  IoLocationOutline,
+  IoCallOutline,
+  IoSendOutline,
+  IoCheckmarkCircleOutline,
+  IoCopyOutline,
+  IoLogoLinkedin,
+  IoLogoGithub,
+  IoLogoInstagram,
+  IoLogoTwitter,
+} from "react-icons/io5";
 import { cn } from "@/lib/utils";
 
-interface ContactInfoItem {
+interface ContactCard {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string;
-  href: string | null;
+  copyValue: string;
 }
 
-const contactInfo: ContactInfoItem[] = [
+const contactCards: ContactCard[] = [
   {
     icon: IoMailOutline,
     label: "Email",
     value: "dhruvimittal0608@gmail.com",
-    href: "mailto:dhruvimittal0608@gmail.com",
+    copyValue: "dhruvimittal0608@gmail.com",
   },
   {
     icon: IoCallOutline,
     label: "Phone",
     value: "+91 8708682967",
-    href: "tel:+918708682967",
+    copyValue: "+918708682967",
   },
   {
     icon: IoLocationOutline,
     label: "Location",
     value: "Delhi, India",
-    href: null,
+    copyValue: "Delhi, India",
   },
+];
+
+const socialLinks = [
   {
-    icon: IoLogoLinkedin,
     label: "LinkedIn",
-    value: "linkedin.com/in/dhruvimit06",
+    icon: IoLogoLinkedin,
     href: "https://www.linkedin.com/in/dhruvimit06",
   },
   {
-    icon: IoLogoGithub,
     label: "GitHub",
-    value: "github.com/dhruvi2006",
+    icon: IoLogoGithub,
     href: "https://github.com/dhruvi2006",
+  },
+  {
+    label: "Instagram",
+    icon: IoLogoInstagram,
+    href: "https://instagram.com/dhruvi_mit",
+  },
+  {
+    label: "X",
+    icon: IoLogoTwitter,
+    href: "https://x.com/dhruvi_mit",
   },
 ];
 
@@ -82,7 +103,6 @@ export function Contact() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
-    // Clear error for this field when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -91,13 +111,21 @@ export function Contact() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    if (error) setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  const handleCopy = async (value: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      toast.success(`${label} copied to clipboard`);
+    } catch {
+      toast.error("Failed to copy");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate all fields
     const newErrors: FormErrors = {
       name: validateField("name", formState.name),
       email: validateField("email", formState.email),
@@ -105,9 +133,7 @@ export function Contact() {
     };
     setErrors(newErrors);
 
-    // Check if there are any errors
     if (newErrors.name || newErrors.email || newErrors.message) {
-      // Show the first error as a toast
       const firstError = newErrors.name || newErrors.email || newErrors.message;
       if (firstError) toast.error(firstError);
       return;
@@ -133,7 +159,6 @@ export function Contact() {
         return;
       }
 
-      // Success
       toast.success("Message sent successfully.");
       setFormState({ name: "", email: "", message: "" });
       setErrors({});
@@ -147,148 +172,208 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-32 md:py-40">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+    <section id="contact" className="py-28 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* SECTION HEADER */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const }}
-          className="mb-16"
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
         >
-          <span className="text-xs tracking-widest uppercase text-secondary font-medium">Contact</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.1] mt-4">
-            Get In <span className="text-accent">Touch</span>
+          <span className="block text-[13px] tracking-[0.25em] uppercase font-semibold text-zinc-400">
+            Contact
+          </span>
+          <h2 className="mt-3 max-w-[600px] text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 leading-tight">
+            Get in Touch — Interested in Working Together?
           </h2>
+          <p className="mt-3 max-w-[600px] text-sm text-zinc-500 leading-relaxed">
+            Open to internships, software engineering roles, freelance projects, and product collaborations.
+          </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
-          {/* Left - Contact Info */}
+        {/* TWO-COLUMN LAYOUT */}
+        <div className="grid lg:grid-cols-[420px_1fr] gap-10">
+          {/* ======================== */}
+          {/* LEFT COLUMN — Contact Info */}
+          {/* ======================== */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0, 1] as const }}
-            className="space-y-6"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const }}
           >
-            {contactInfo.map((info, index) => (
-              <motion.div
-                key={info.label}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05, duration: 0.4 }}
-              >
-                {info.href ? (
-                  <a
-                    href={info.href}
-                    target={info.href.startsWith("http") ? "_blank" : undefined}
-                    rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className="group flex items-center gap-4 p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors duration-200"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center group-hover:bg-accent/10 group-hover:text-accent transition-colors duration-200">
-                      <info.icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-secondary font-medium uppercase tracking-wide">{info.label}</p>
-                      <p className="text-sm text-foreground font-medium group-hover:text-accent transition-colors duration-200">{info.value}</p>
-                    </div>
-                  </a>
-                ) : (
-                  <div className="flex items-center gap-4 p-4 -mx-4">
-                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
-                      <info.icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-secondary font-medium uppercase tracking-wide">{info.label}</p>
-                      <p className="text-sm text-foreground font-medium">{info.value}</p>
-                    </div>
+            {/* Contact Info Cards */}
+            <div className="space-y-3">
+              {contactCards.map((card) => (
+                <div
+                  key={card.label}
+                  className="flex items-center gap-4 p-4 rounded-xl border border-zinc-200 bg-white hover:border-zinc-300 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-200 h-[90px]"
+                >
+                  {/* Icon */}
+                  <div className="w-10 h-10 rounded-lg bg-zinc-50 flex items-center justify-center shrink-0">
+                    <card.icon className="w-5 h-5 text-zinc-500" />
                   </div>
-                )}
-              </motion.div>
-            ))}
+
+                  {/* Text */}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[11px] tracking-[0.12em] uppercase font-medium text-zinc-400">
+                      {card.label}
+                    </p>
+                    <p className="text-sm font-medium text-zinc-800 mt-0.5 truncate">
+                      {card.value}
+                    </p>
+                  </div>
+
+                  {/* Copy Button */}
+                  <button
+                    onClick={() => handleCopy(card.copyValue, card.label)}
+                    className="w-9 h-9 rounded-lg border border-zinc-200 flex items-center justify-center hover:bg-zinc-100 transition-colors duration-200 shrink-0 cursor-pointer"
+                    aria-label={`Copy ${card.label}`}
+                  >
+                    <IoCopyOutline className="w-4 h-4 text-zinc-400" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="my-6 h-px bg-zinc-100" />
+
+            {/* Social Links */}
+            <div className="flex flex-wrap gap-2.5">
+              {socialLinks.map((link) => {
+                const brandColor =
+                  link.label === "LinkedIn"
+                    ? "#0A66C2"
+                    : link.label === "GitHub"
+                    ? "#181717"
+                    : link.label === "Instagram"
+                    ? "#E1306C"
+                    : "#000000";
+
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative overflow-hidden inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-zinc-200 bg-white text-sm font-medium transition-all duration-300 group hover:border-transparent"
+                  >
+                    {/* Left-to-right fill overlay */}
+                    <span
+                      className="absolute inset-0 transition-transform duration-300 ease-out -translate-x-full group-hover:translate-x-0"
+                      style={{ backgroundColor: brandColor }}
+                    />
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 text-zinc-600 group-hover:text-white transition-colors duration-300">
+                      <link.icon className="w-4 h-4" />
+                      {link.label}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
           </motion.div>
 
-          {/* Right - Contact Form */}
+          {/* ======================== */}
+          {/* RIGHT COLUMN — Form */}
+          {/* ======================== */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0, 1] as const }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const }}
           >
-            <form onSubmit={handleSubmit} className="p-8 sm:p-10 rounded-2xl border border-border bg-card shadow-sm">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-xs font-medium text-secondary uppercase tracking-wide">Name</label>
-                  <input
-                    id="name" name="name" type="text" value={formState.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    disabled={isSubmitting}
-                    required placeholder="John Doe"
-                    className={cn(
-                      "w-full h-11 px-4 rounded-xl border bg-background text-sm text-foreground placeholder:text-secondary/40",
-                      "focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all duration-200",
-                      errors.name ? "border-red-400 focus:border-red-500 focus:ring-red-200" : "border-border",
-                      isSubmitting && "opacity-50 cursor-not-allowed"
-                    )}
-                  />
-                  {errors.name && (
-                    <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-                      <IoAlertCircleOutline className="w-3 h-3" />
-                      {errors.name}
-                    </p>
-                  )}
+            <div className="p-8 sm:p-10 rounded-2xl border border-zinc-200 bg-white">
+              <h3 className="text-xl font-semibold tracking-tight text-zinc-900 mb-6">
+                Send a Message
+              </h3>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Name + Email — two columns */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-[11px] tracking-[0.12em] uppercase font-medium text-zinc-400">
+                      Name
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={formState.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      disabled={isSubmitting}
+                      placeholder="John Doe"
+                      className={cn(
+                        "w-full h-14 px-4 rounded-xl border bg-white text-sm text-zinc-900 placeholder:text-zinc-300",
+                        "focus:outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400/20 transition-all duration-200",
+                        errors.name ? "border-red-400" : "border-zinc-200",
+                        isSubmitting && "opacity-50 cursor-not-allowed"
+                      )}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-[11px] tracking-[0.12em] uppercase font-medium text-zinc-400">
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formState.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      disabled={isSubmitting}
+                      placeholder="john@example.com"
+                      className={cn(
+                        "w-full h-14 px-4 rounded-xl border bg-white text-sm text-zinc-900 placeholder:text-zinc-300",
+                        "focus:outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400/20 transition-all duration-200",
+                        errors.email ? "border-red-400" : "border-zinc-200",
+                        isSubmitting && "opacity-50 cursor-not-allowed"
+                      )}
+                    />
+                  </div>
                 </div>
+
+                {/* Message */}
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-xs font-medium text-secondary uppercase tracking-wide">Email</label>
-                  <input
-                    id="email" name="email" type="email" value={formState.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    disabled={isSubmitting}
-                    required placeholder="john@example.com"
-                    className={cn(
-                      "w-full h-11 px-4 rounded-xl border bg-background text-sm text-foreground placeholder:text-secondary/40",
-                      "focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all duration-200",
-                      errors.email ? "border-red-400 focus:border-red-500 focus:ring-red-200" : "border-border",
-                      isSubmitting && "opacity-50 cursor-not-allowed"
-                    )}
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-                      <IoAlertCircleOutline className="w-3 h-3" />
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-xs font-medium text-secondary uppercase tracking-wide">Message</label>
+                  <label htmlFor="message" className="text-[11px] tracking-[0.12em] uppercase font-medium text-zinc-400">
+                    Message
+                  </label>
                   <textarea
-                    id="message" name="message" value={formState.message}
+                    id="message"
+                    name="message"
+                    value={formState.message}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled={isSubmitting}
-                    required rows={5} placeholder="Tell me about your project..."
+                    rows={5}
+                    placeholder="Tell me about your project..."
                     className={cn(
-                      "w-full px-4 py-3 rounded-xl border bg-background text-sm text-foreground placeholder:text-secondary/40 resize-none",
-                      "focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-all duration-200",
-                      errors.message ? "border-red-400 focus:border-red-500 focus:ring-red-200" : "border-border",
+                      "w-full px-4 py-3 rounded-xl border bg-white text-sm text-zinc-900 placeholder:text-zinc-300 resize-none",
+                      "focus:outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400/20 transition-all duration-200",
+                      errors.message ? "border-red-400" : "border-zinc-200",
                       isSubmitting && "opacity-50 cursor-not-allowed"
                     )}
                   />
-                  {errors.message && (
-                    <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-                      <IoAlertCircleOutline className="w-3 h-3" />
-                      {errors.message}
-                    </p>
-                  )}
                 </div>
-                <Button
-                  type="submit" variant="primary" size="lg" disabled={isSubmitting}
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
                   className={cn(
-                    "w-full cursor-pointer transition-all duration-300",
-                    isSubmitted && "bg-success hover:bg-success"
+                    "w-full h-14 rounded-xl bg-black text-white text-sm font-medium",
+                    "flex items-center justify-center gap-2.5",
+                    "transition-all duration-300",
+                    isSubmitting
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-zinc-900 hover:-translate-y-0.5 cursor-pointer",
+                    isSubmitted && "bg-emerald-600 hover:bg-emerald-600"
                   )}
                 >
                   {isSubmitting ? (
@@ -306,12 +391,13 @@ export function Contact() {
                     </>
                   ) : (
                     <>
-                      <IoSendOutline className="w-4 h-4" />Send Message
+                      <IoSendOutline className="w-4 h-4" />
+                      Send Message
                     </>
                   )}
-                </Button>
-              </div>
-            </form>
+                </button>
+              </form>
+            </div>
           </motion.div>
         </div>
       </div>

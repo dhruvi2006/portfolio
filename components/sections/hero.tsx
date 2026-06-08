@@ -2,10 +2,17 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { IoArrowForwardOutline, IoLocationOutline, IoDocumentTextOutline } from "react-icons/io5";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useScrollState } from "@/components/scroll-context";
+import { useTheme } from "@/components/theme-provider";
+import {
+  IoArrowForwardOutline,
+  IoLocationOutline,
+  IoDocumentTextOutline,
+  IoCodeSlashOutline,
+  IoPeopleOutline,
+} from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,7 +44,7 @@ const MagneticButton = ({
 }: {
   children: React.ReactNode;
   href: string;
-  variant?: "primary" | "outline";
+  variant?: "primary" | "secondary" | "outline";
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -65,7 +72,7 @@ const MagneticButton = ({
       >
         <a href={href}>
           <Button
-            variant={variant === "primary" ? "primary" : "outline"}
+            variant={variant}
             size="lg"
             className="group cursor-pointer"
           >
@@ -77,9 +84,30 @@ const MagneticButton = ({
   );
 };
 
+const techStack = [
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Tailwind",
+  "React Native",
+  "FastAPI",
+];
+
+
+
 export function Hero() {
+  const { scrolledPast } = useScrollState();
+  const { scrollY } = useScroll();
+  const { toggleTheme } = useTheme();
+
+  // Synchronous threshold — matches scroll-context's 75vh check
+  const threshold = typeof window !== "undefined" ? window.innerHeight * 0.75 : 600;
+
+  // Continuous scroll-driven fade — makes the layoutId transition feel scroll-driven
+  const scrollOpacity = useTransform(scrollY, [threshold - 120, threshold], [1, 0]);
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen overflow-hidden">
       {/* Subtle background dot pattern */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
         <div
@@ -91,8 +119,8 @@ export function Hero() {
         />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-24">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-32 pb-16 md:pb-20">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center min-h-[calc(100vh-12rem)]">
           {/* Left Content */}
           <motion.div
             variants={containerVariants}
@@ -100,56 +128,90 @@ export function Hero() {
             animate="visible"
             className="max-w-xl"
           >
+            {/* Status indicator */}
             <motion.div variants={itemVariants} className="mb-6">
-              <Badge variant="accent" className="text-xs tracking-widest uppercase px-4 py-1.5">
-                Building Production-Ready Software Products
-              </Badge>
+              <div className="inline-flex items-center gap-2 text-sm text-secondary">
+                <span className="relative flex w-2 h-2">
+                  <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400/60 animate-ping" />
+                  <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-500" />
+                </span>
+                <span className="text-xs tracking-wide">Available for new opportunities</span>
+              </div>
             </motion.div>
 
+            {/* Heading */}
             <motion.h1
               variants={itemVariants}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.9] text-foreground mb-6"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.9] text-foreground"
             >
               Dhruvi
               <br />
-              <span className="text-accent">Mittal</span>
+              Mittal
             </motion.h1>
 
-            <motion.p
-              variants={itemVariants}
-              className="text-lg sm:text-xl text-secondary leading-relaxed mb-4 max-w-lg"
-            >
-              Full-Stack Developer & AI Engineer. Co-Founder at Shudveta.
-            </motion.p>
-
-            <motion.p
-              variants={itemVariants}
-              className="text-base text-secondary/80 leading-relaxed mb-8 max-w-md"
-            >
-              Building production-ready software across web, mobile, AI, and automation. Currently pursuing BCA while shipping applications that solve real-world problems.
-            </motion.p>
-
+            {/* Decorative dash */}
             <motion.div
               variants={itemVariants}
-              className="flex items-center gap-2 text-sm text-secondary mb-10"
+              className="w-16 h-px bg-gradient-to-r from-foreground/40 to-transparent mt-5 mb-6"
+            />
+
+            {/* Sub-headline */}
+            <motion.p
+              variants={itemVariants}
+              className="text-lg sm:text-xl text-secondary leading-relaxed mb-6 max-w-lg"
             >
-              <IoLocationOutline className="w-4 h-4" />
-              <span>Delhi, India</span>
+              Building software that solves real problems.
+            </motion.p>
+
+            {/* Detail bullet points with icons */}
+            <motion.div
+              variants={itemVariants}
+              className="space-y-3 mb-8"
+            >
+              <div className="flex items-center gap-3 text-secondary">
+                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                  <IoCodeSlashOutline className="w-4 h-4 text-foreground/60" />
+                </div>
+                <span className="text-sm">Full-Stack Developer &amp; AI Engineer</span>
+              </div>
+              <div className="flex items-center gap-3 text-secondary">
+                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                  <IoPeopleOutline className="w-4 h-4 text-foreground/60" />
+                </div>
+                <span className="text-sm">Co-Founder at Shudveta</span>
+              </div>
             </motion.div>
 
+            {/* Buttons */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap gap-4"
+              className="flex flex-wrap gap-4 mb-6"
             >
               <MagneticButton href="#projects" variant="primary">
                 View Projects
                 <IoArrowForwardOutline className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </MagneticButton>
-              <MagneticButton href="/resume.pdf" variant="outline">
+              <MagneticButton href="/resume.pdf" variant="secondary">
                 <IoDocumentTextOutline className="w-4 h-4" />
                 Download Resume
               </MagneticButton>
             </motion.div>
+
+            {/* Tech stack tags */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap gap-2 mb-6"
+            >
+              {techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1 text-xs font-medium text-secondary bg-muted rounded-full border border-border/50"
+                >
+                  {tech}
+                </span>
+              ))}
+            </motion.div>
+
           </motion.div>
 
           {/* Right Side - Portrait */}
@@ -157,51 +219,58 @@ export function Hero() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="hidden lg:flex justify-center items-center"
+            className="hidden lg:flex flex-col items-center gap-4"
+            style={{ opacity: scrollOpacity }}
           >
-            <motion.div variants={itemVariants} className="relative">
-              <motion.div
-                className="relative w-[400px] h-[400px] rounded-3xl overflow-hidden border border-border shadow-sm"
-                style={{ filter: "grayscale(100%)" }}
-                whileHover={{ filter: "grayscale(0%)" }}
-                transition={{
-                  duration: 0.5,
-                  ease: [0.25, 0.1, 0, 1],
-                }}
-              >
-                <Image
-                  src="/myimage.png"
-                  alt="Dhruvi Mittal portrait"
-                  fill
-                  className="object-cover"
-                  sizes="400px"
-                  priority
-                />
-              </motion.div>
+            <AnimatePresence mode="popLayout">
+              {!scrolledPast && (
+                <motion.div
+                  key="hero-portrait"
+                  layoutId="profile-image"
+                  variants={itemVariants}
+                  className="relative"
+                >
+                  <motion.div
+                    className="relative w-[380px] h-[480px] rounded-3xl overflow-hidden border border-border cursor-pointer"
+                    animate={{
+                      filter: "grayscale(0%)",
+                      scale: 1,
+                    }}
+                    whileHover={{
+                      filter: "grayscale(100%)",
+                      scale: 1.02,
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={toggleTheme}
+                    title="Toggle theme"
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <Image
+                      src="/myimage.png"
+                      alt="Dhruvi Mittal portrait"
+                      fill
+                      className="object-cover"
+                      sizes="380px"
+                      priority
+                    />
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Location below portrait */}
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center gap-2 text-sm text-secondary"
+            >
+              <IoLocationOutline className="w-4 h-4" />
+              <span>Delhi, India</span>
             </motion.div>
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
-      >
-        <motion.div
-          className="w-5 h-8 rounded-full border-2 border-border flex items-start justify-center p-1"
-          animate={{ opacity: [0.4, 0.8, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <motion.div
-            className="w-1 h-2 rounded-full bg-secondary"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
-      </motion.div>
+
     </section>
   );
 }

@@ -37,6 +37,7 @@ export function InteractiveDotBackground() {
     let animationFrame = 0;
     let width = 0;
     let height = 0;
+    let interactive = false;
 
     const isDark = () =>
       document.documentElement.classList.contains("dark");
@@ -87,7 +88,7 @@ export function InteractiveDotBackground() {
         let opacity = idle;
         let scale = 1;
 
-        if (distance < MOUSE_RADIUS) {
+        if (interactive && distance < MOUSE_RADIUS) {
           const t = 1 - distance / MOUSE_RADIUS;
           const reveal = t * t * (3 - 2 * t); // smoothstep — smooth, wide halo
 
@@ -120,18 +121,24 @@ export function InteractiveDotBackground() {
     }
 
     function handleMouseMove(e: MouseEvent) {
+      if (!interactive) return;
+
       mouseX = e.clientX;
       mouseY = e.clientY;
       requestDraw();
     }
 
     function handleMouseLeave() {
+      if (!interactive) return;
+
       mouseX = -1000;
       mouseY = -1000;
       requestDraw();
     }
 
     function handleTouchMove(e: TouchEvent) {
+      if (!interactive) return;
+
       const touch = e.touches[0];
       if (!touch) return;
 
@@ -142,6 +149,8 @@ export function InteractiveDotBackground() {
     }
 
     function handleTouchEnd() {
+      if (!interactive) return;
+
       mouseX = -1000;
       mouseY = -1000;
       requestDraw();
@@ -152,10 +161,36 @@ export function InteractiveDotBackground() {
       draw();
     }
 
+    function enableInteraction() {
+      if (interactive) return;
+
+      interactive = true;
+      draw();
+    }
+
+    function disableInteraction() {
+      if (!interactive) return;
+
+      interactive = false;
+      mouseX = -1000;
+      mouseY = -1000;
+      draw();
+    }
+
+    function syncInteraction() {
+      if (isDark()) {
+        enableInteraction();
+      } else {
+        disableInteraction();
+      }
+    }
+
     buildGrid();
+    syncInteraction();
     draw();
 
     const observer = new MutationObserver(() => {
+      syncInteraction();
       draw();
     });
 

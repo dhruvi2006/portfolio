@@ -1,8 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { IoCodeSlashOutline, IoServerOutline, IoPhonePortraitOutline, IoSparklesOutline, IoCloudOutline } from "react-icons/io5";
-import { cn } from "@/lib/utils";
+import {
+  IoCodeSlashOutline,
+  IoServerOutline,
+  IoPhonePortraitOutline,
+  IoSparklesOutline,
+  IoCloudOutline,
+} from "react-icons/io5";
 
 const skillCategories = [
   {
@@ -32,85 +37,78 @@ const skillCategories = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.1, 0, 1] as const },
-  },
-};
-
 export function Skills() {
   return (
-    <section id="skills" className="py-32 md:py-40 bg-muted/50">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const }}
-          className="mb-16"
-        >
-          <span className="text-xs tracking-widest uppercase text-secondary font-medium">
-            Skills
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.1] mt-4">
-            Technology{" "}
-            <span className="text-accent">Stack</span>
-          </h2>
-        </motion.div>
+    <section id="skills" className="py-20 bg-white">
+      <div className="max-w-[1280px] mx-auto px-6">
+        {/* SECTION HEADER */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-16 text-center"
+          >
+            <span className="block text-[14px] tracking-[0.35em] uppercase font-semibold text-zinc-400">
+              Capabilities
+            </span>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
-        >
-          {skillCategories.map((category) => (
+            <h2 className="mt-6 text-[52px] md:text-[72px] font-semibold tracking-[-0.05em] leading-[0.95] text-black">
+              Technical Expertise
+            </h2>
+
+            <p className="mt-8 max-w-[900px] mx-auto text-[20px] md:text-[24px] leading-relaxed text-zinc-500">
+              Core technical capabilities across frontend, backend, mobile, AI, and cloud.
+            </p>
+          </motion.div>
+
+        {/* SKILL CARDS */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {skillCategories.map((category, index) => (
             <motion.div
               key={category.title}
-              variants={itemVariants}
-              className={cn(
-                "group relative p-6 rounded-2xl border border-border bg-card",
-                "transition-all duration-300 cursor-default",
-                "shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-accent/20"
-              )}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{
+                duration: 0.5,
+                ease: [0.25, 0.1, 0, 1] as const,
+                delay: index * 0.08,
+              }}
+              className="group relative flex flex-col p-6 rounded-[28px] bg-white border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default"
             >
-              <div className="relative z-10">
-                <div className="text-lg mb-4 opacity-60">
-                  <category.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-sm font-semibold text-foreground mb-4">
-                  {category.title}
-                </h3>
-                <ul className="space-y-2">
-                  {category.skills.map((skill) => (
-                    <li
-                      key={skill}
-                      className="flex items-center gap-2 text-xs text-secondary"
-                    >
-                      <span className="w-1 h-1 rounded-full bg-accent/60" />
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
+              {/* Watermark icon — oversized, low opacity */}
+              <div className="absolute top-3 right-3 pointer-events-none select-none">
+                <category.icon className="w-20 h-20 text-zinc-900 opacity-[0.04]" />
               </div>
 
-              {/* Bottom accent line */}
-              <div className="absolute bottom-0 left-6 right-6 h-px bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Icon */}
+              <div className="relative z-10 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-zinc-50 flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-300">
+                  <category.icon className="w-5 h-5 text-zinc-600 group-hover:text-accent transition-colors duration-300" />
+                </div>
+              </div>
+
+              {/* Title */}
+              <h3 className="relative z-10 text-base font-semibold text-zinc-900 mb-4">
+                {category.title}
+              </h3>
+
+              {/* Skills as bullet list */}
+              <ul className="relative z-10 space-y-2">
+                {category.skills.map((skill) => (
+                  <li
+                    key={skill}
+                    className="flex items-center gap-2.5 text-sm text-zinc-500"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-accent/50 shrink-0" />
+                    {skill}
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

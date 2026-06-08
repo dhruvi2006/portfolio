@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { LayoutGroup } from "framer-motion";
 import { Nav } from "@/components/nav";
-import { FloatingProfile } from "@/components/floating-profile";
 import { InteractiveDotBackground } from "@/components/interactive-dot-background";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollProvider } from "@/components/scroll-context";
@@ -60,11 +60,12 @@ export default function RootLayout({
         <InteractiveDotBackground />
         <div className="relative z-[1]">
           <ThemeProvider>
-            <ScrollProvider>
-              <Nav />
-              <FloatingProfile />
-              {children}
-            </ScrollProvider>
+            <LayoutGroup>
+              <ScrollProvider>
+                <Nav />
+                {children}
+              </ScrollProvider>
+            </LayoutGroup>
           </ThemeProvider>
           <Toaster
             position="bottom-right"

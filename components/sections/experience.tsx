@@ -1,49 +1,61 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { Button } from "@/components/ui/button";
 
 const experiences = [
   {
+    logo: "SH",
     company: "Shudveta",
     role: "Co-Founder",
-    period: "Present",
+    link: "https://shudveta.com",
+    periodTop: "2025 -",
+    periodBottom: "Present",
     description:
-      "Building production-ready software products for clients. Leading technical strategy, architecture, and delivery across web, mobile, and AI projects.",
-    tags: ["Next.js", "React Native", "FastAPI", "AI"],
-    highlight: true,
+      "Building production-ready software products for clients across industries. Leading technical strategy, architecture, and delivery across web, mobile, and AI projects.",
   },
   {
+    logo: "IT",
     company: "iTuple Technologies",
     role: "Software Developer Intern",
-    period: "Past",
+    link: "https://ituple.com",
+    periodTop: "Jan 2026 -",
+    periodBottom: "May 2026",
     description:
       "Developed and maintained software solutions. Collaborated with the engineering team on full-stack development and internal tooling.",
-    tags: ["React", "Node.js", "MongoDB"],
-    highlight: false,
   },
   {
+    logo: "LE",
     company: "Lubeck Elevators",
     role: "Software Developer",
-    period: "Past",
+    periodTop: "Jun 2025 -",
+    periodBottom: "Jul 2025",
     description:
       "Built and managed the digital ecosystem for Lubeck Elevators, including web applications, admin dashboards, and client portals.",
-    tags: ["Next.js", "TypeScript", "PostgreSQL"],
-    highlight: false,
   },
   {
+    logo: "LX",
     company: "Lubeck Exports",
     role: "Web Developer",
-    period: "Past",
+    periodTop: "Jul 2025 -",
+    periodBottom: "Aug 2025",
     description:
       "Developed and maintained the company's export platform. Built e-commerce solutions and inventory management systems.",
-    tags: ["React", "Tailwind", "Firebase"],
-    highlight: false,
   },
 ];
 
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
 const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
@@ -53,88 +65,131 @@ const itemVariants = {
 
 export function Experience() {
   return (
-    <section id="experience" className="py-32 md:py-40 bg-muted/50">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const }}
-          className="mb-20"
-        >
-          <span className="text-xs tracking-widest uppercase text-secondary font-medium">
-            Experience
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.1] mt-4">
-            Where I&apos;ve{" "}
-            <span className="text-accent">Worked</span>
-          </h2>
-        </motion.div>
-
-        <div className="relative max-w-3xl">
-          {/* Timeline line */}
-          <div className="absolute left-[7px] md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-px" />
-
-          <div className="space-y-16">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={exp.company}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={itemVariants}
-                className={cn(
-                  "relative pl-10 md:pl-0",
-                  index % 2 === 0 ? "md:pr-12 md:text-right md:mr-[50%]" : "md:pl-12 md:ml-[50%]"
-                )}
-              >
-                {/* Timeline dot */}
-                <div
-                  className={cn(
-                    "absolute left-0 md:left-1/2 top-1 w-[15px] h-[15px] rounded-full border-[3px] bg-background -translate-x-1/2 z-10",
-                    exp.highlight ? "border-accent" : "border-border"
-                  )}
-                >
-                  {exp.highlight && (
-                    <div className="absolute inset-0 rounded-full bg-accent/20 animate-pulse" />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div>
-                  <span className="text-xs text-secondary/60 font-medium tracking-wide uppercase">
-                    {exp.period}
-                  </span>
-                  <h3 className="text-xl font-semibold text-foreground mt-1">
-                    {exp.company}
-                  </h3>
-                  <p className="text-sm text-accent font-medium mt-0.5">
-                    {exp.role}
-                  </p>
-                  <p className="text-sm text-secondary leading-relaxed mt-3 max-w-md">
-                    {exp.description}
-                  </p>
-                  <div
-                    className={cn(
-                      "flex flex-wrap gap-2 mt-4",
-                      index % 2 === 0 ? "md:justify-end" : ""
-                    )}
-                  >
-                    {exp.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-3 py-1 rounded-full bg-background border border-border text-secondary shadow-sm"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+    <section id="experience" className="relative py-32 md:py-40 overflow-hidden">
+      {/* Subtle dotted grid background */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
+        <div
+          className="w-full h-full"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, var(--color-foreground) 1px, transparent 0)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
       </div>
+<div className="relative max-w-[1600px] mx-auto px-8 md:px-12 lg:px-20">
+  <div className="lg:flex gap-28">
+    {/* Left Panel */}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const }}
+      className="lg:w-[26%] lg:flex-shrink-0 mb-20 lg:mb-0"
+    >
+      <span className="text-sm tracking-[0.25em] uppercase text-accent font-medium">
+        Experience
+      </span>
+
+<h2 className="mt-4 max-w-[220px] text-[48px] sm:text-[56px] lg:text-[68px] leading-[0.95] font-semibold tracking-[-0.04em] text-black">
+  Where I&apos;ve
+  <br />
+  Worked
+</h2>
+
+      <div className="w-16 h-[3px] bg-accent rounded-full mt-10" />
+
+      <p className="mt-10 text-base lg:text-sm leading-8 text-secondary max-w-md">
+       Building software, leading teams, and turning ideas <br />into products that people actually use.
+      </p>
+<div className="absolute left-[505px] top-3 bottom-5 w-px bg-border" />
+      <div className="mt-12">
+        <a href="/resume.pdf">
+          <Button
+            variant="secondary"
+            size="md"
+            className="group cursor-pointer"
+          >
+            <IoDocumentTextOutline className="w-4 h-4" />
+            Download Resume
+          </Button>
+        </a>
+      </div>
+    </motion.div>
+
+    {/* Right Panel */}
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="flex-1 min-w-0"
+    >
+      <div className="relative">
+        {/* Main Timeline Line */}
+        <div className="absolute left-[75px] top-3 bottom-5 w-px bg-border" />
+
+        {experiences.map((exp, index) => (
+          <motion.div
+            key={exp.company}
+            variants={itemVariants}
+            className="relative grid grid-cols-[30px_40px_52px_260px_1fr] gap-6 pb-16 last:pb-0"
+          >
+            {/* Year */}
+            <div className="flex justify-end pt-2">
+              <div className="text-right leading-[1.15]">
+                <div className="text-[15px] text-secondary/70">
+                  {exp.periodTop}
+                </div>
+                <div className="text-[15px] text-secondary/70">
+                  {exp.periodBottom}
+                </div>
+              </div>
+            </div>
+
+            {/* Timeline Dot */}
+            <div className="relative flex justify-center">
+              <div className="absolute top-2 w-4 h-4 rounded-full bg-accent border-4 border-background z-10" />
+            </div>
+
+            {/* Logo Box */}
+            <div className="w-14 h-14 mt-2 rounded-2xl border border-border bg-background flex items-center justify-center text-xs font-semibold text-secondary">
+                {exp.logo}      
+            </div>
+
+            {/* Company */}
+            <div>
+              <a
+                href={exp.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block group"
+              >
+                <h3 className="text-2xl mt-2 leading-none font-semibold tracking-tight transition-colors duration-300 group-hover:text-accent">
+                  {exp.company}
+                </h3>
+              </a>
+
+              <p className="text-accent text-base lg:text-sm font-medium mt-1">
+                {exp.role}
+              </p>
+            </div>
+            {/* Description */}
+            <div className="max-w-[380px]">
+              <p className="text-secondary/80 text-base lg:text-ls leading-8">
+                {exp.description}
+              </p>
+            </div>
+
+            {/* Divider */}
+            {index < experiences.length - 1 && (
+              <div className="absolute left-[90px] right-0 bottom-0 h-px bg-border/60" />
+            )}
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  </div>
+</div>
     </section>
   );
 }

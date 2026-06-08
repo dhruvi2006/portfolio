@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { useScrollState } from "@/components/scroll-context";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -16,6 +18,7 @@ const navLinks = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const { scrolledPast } = useScrollState();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -118,6 +121,32 @@ export function Nav() {
 
           {/* Right — Actions */}
           <div className="flex items-center gap-3">
+            {/* Avatar — morphs from hero on scroll */}
+            <AnimatePresence mode="popLayout">
+              {scrolledPast && (
+                <motion.div
+                  key="nav-avatar"
+                  layoutId="profile-image"
+                  className="w-16 h-16 rounded-xl overflow-hidden ring-2 ring-white/20 shadow-sm shrink-0 self-end -mb-8 cursor-pointer"
+                  onClick={() => {
+                    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  title="Scroll to top"
+                >
+                  <Image
+                    src="/myimage.png"
+                    alt="Dhruvi Mittal"
+                    width={64}
+                    height={64}
+                    className="object-cover w-full h-full"
+                    priority
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Resume button — visible on md+ */}
             <motion.a
               href="/resume.pdf"

@@ -1,103 +1,82 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 const highlights = [
   {
     metric: "15+",
     label: "Projects Delivered",
-    description: "Production applications shipped across web, mobile, and AI",
+    description: "Production applications shipped across web, mobile, and AI.",
   },
   {
     metric: "4+",
     label: "Organizations Worked With",
-    description: "From startups to established companies",
+    description: "From startups to established companies.",
   },
   {
     metric: "Multiple",
     label: "Production Deployments",
-    description: "Live applications serving real users",
+    description: "Live applications serving real users.",
   },
   {
-    metric: "Web • Mobile",
-    label: "AI Expertise",
-    description: "End-to-end AI integration in production systems",
+    metric: "Web • Mobile • AI",
+    label: "Expertise",
+    description: "End-to-end software engineering and deployment.",
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.1, 0, 1] as const },
-  },
-};
-
 export function ExperienceHighlights() {
   return (
-    <section className="py-32 md:py-40 bg-dark-bg text-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+    <section className="py-24 bg-black overflow-hidden">
+      <div className="max-w-[1280px] mx-auto px-6">
+        {/* SECTION HEADER */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const }}
-          className="mb-16"
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-14"
         >
-          <span className="text-xs tracking-widest uppercase text-dark-secondary font-medium">
+          <span className="block text-[13px] tracking-[0.25em] uppercase font-semibold text-zinc-500">
             Impact
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.1] mt-4 text-white">
-            Experience{" "}
-            <span className="text-accent">Highlights</span>
-          </h2>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
-        >
-          {highlights.map((item) => (
+        {/* STATS GRID */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {highlights.map((item, index) => (
             <motion.div
               key={item.label}
-              variants={cardVariants}
-              className={cn(
-                "relative group p-8 rounded-2xl border border-dark-border bg-dark-card",
-                "hover:bg-dark-card/80 transition-all duration-300",
-                "hover:border-accent/20 hover:shadow-lg hover:shadow-accent/5",
-                "hover:-translate-y-1"
-              )}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{
+                duration: 0.5,
+                ease: [0.25, 0.1, 0, 1] as const,
+                delay: index * 0.1,
+              }}
+              className="group relative p-8 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_0_24px_-4px_rgba(255,255,255,0.08)]"
             >
-              <div className="relative z-10">
-                <div className="text-4xl sm:text-5xl font-semibold tracking-tight text-white mb-3">
-                  {item.metric}
-                </div>
-                <h3 className="text-sm font-semibold text-white/90 mb-2">
-                  {item.label}
-                </h3>
-                <p className="text-xs text-dark-secondary leading-relaxed">
-                  {item.description}
-                </p>
+              {/* Metric */}
+              <div className="text-6xl font-semibold tracking-tight text-white mb-3">
+                {item.metric}
               </div>
 
-              {/* Bottom accent line */}
-              <div className="absolute bottom-0 left-6 right-6 h-px bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Title */}
+              <h3 className="text-xl font-medium text-white/80 mb-2">
+                {item.label}
+              </h3>
+
+              {/* Description */}
+              <p className="text-sm text-zinc-400 leading-relaxed max-w-xs">
+                {item.description}
+              </p>
+
+              {/* Subtle top-right glow on hover */}
+              <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-3xl" />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
