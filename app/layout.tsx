@@ -5,6 +5,7 @@ import { Nav } from "@/components/nav";
 import { InteractiveDotBackground } from "@/components/interactive-dot-background";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollProvider } from "@/components/scroll-context";
+import { ResumeProvider } from "@/components/ResumeModal";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -62,8 +63,10 @@ export default function RootLayout({
           <ThemeProvider>
             <LayoutGroup>
               <ScrollProvider>
-                <Nav />
-                {children}
+                <ResumeProvider>
+                  <Nav />
+                  {children}
+                </ResumeProvider>
               </ScrollProvider>
             </LayoutGroup>
           </ThemeProvider>

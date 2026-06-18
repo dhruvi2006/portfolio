@@ -90,8 +90,7 @@ export function About() {
         {/* Stats / Metrics Row */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0, 1] as const }}
           className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-20 md:mb-24"
         >
@@ -121,57 +120,86 @@ export function About() {
         </motion.div>
 
         {/* Main About Content */}
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          {/* Left - Text */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const }}
-          >
-            <span className="text-xs tracking-widest uppercase text-secondary font-medium">
-              About Me
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.1] mt-4 mb-6">
-              I build products that solve{" "}
-              <span className="text-accent">real problems</span>
-            </h2>
-            <div className="space-y-4 text-secondary leading-relaxed">
-              <p>
-                I&apos;m Dhruvi — a Full-Stack Developer and AI Engineer based in Delhi, India.
-                Currently pursuing my BCA while co-founding{" "}
-                <span className="text-foreground font-medium">Shudveta</span>,
-                where we build production-ready software products for clients across industries.
-              </p>
-              <p>
-                My approach combines strong technical foundations with a product-minded
-                perspective. I don&apos;t just write code — I build solutions that create
-                measurable impact for businesses and their users. From healthcare platforms
-                to AI-powered tools, every project is an opportunity to push what&apos;s
-                possible with modern technology.
-              </p>
-            </div>
+        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-14 lg:gap-20 items-start">
+{/* Left - Text */}
+<motion.div
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const, delay: 0.1 }}
+  className="max-w-[760px]"
+>
+  {/* Label */}
+  <span className="text-sm tracking-[0.35em] uppercase text-secondary/60 font-medium">
+    About
+  </span>
 
-            {/* Location */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const, delay: 0.3 }}
-              className="mt-8 flex items-center gap-2 text-sm text-secondary"
-            >
-              <IoLocationOutline className="w-4 h-4" />
-              <span>Delhi, India</span>
-            </motion.div>
-          </motion.div>
+  {/* Heading */}
+  <h2 className="mt-5 mb-10 text-[22px] sm:text-[60px] lg:text-[42px] font-bold tracking-[-0.04em] leading-[0.92] text-foreground max-w-[900px]">
+    Building Software That Solves Real Problems
+  </h2>
+
+  {/* Content */}
+  <div className="space-y-7 text-[16px] leading-[1.75] text-secondary">
+    <p>
+      I am{" "}
+      <span className="font-semibold text-foreground">
+        Dhruvi Mittal
+      </span>
+      , a Full-Stack Developer and AI Engineer currently pursuing a{" "}
+      <span className="font-semibold text-foreground">
+        Bachelor of Computer Applications (BCA)
+      </span>{" "}
+      at Vivekananda Institute of Professional Studies, Delhi. As Co-Founder
+      at{" "}
+      <span className="font-semibold text-foreground">
+        Shudveta IT Solutions
+      </span>
+      , my work focuses on building production-ready web, mobile, and
+      AI-powered applications that solve operational and business
+      challenges.
+    </p>
+
+    <p>
+      Over the last few years, I have worked across healthcare technology,
+      insurance systems, automation workflows, and intelligent software
+      platforms. Projects like{" "}
+      <span className="font-semibold text-foreground">IPD Now</span>,{" "}
+      <span className="font-semibold text-foreground">MiAssured</span>, and{" "}
+      <span className="font-semibold text-foreground">LifeLane</span>{" "}
+      reflect my commitment to turning complex requirements into reliable,
+      scalable solutions that create measurable value.
+    </p>
+
+    <p>
+      My approach combines strong technical execution with product thinking,
+      ensuring that every system is built not just to function, but to solve
+      meaningful problems effectively.
+    </p>
+  </div>
+
+  {/* Location */}
+  <motion.div
+    initial={{ opacity: 0, y: 15 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{
+      duration: 0.5,
+      ease: [0.25, 0.1, 0, 1] as const,
+      delay: 0.4,
+    }}
+    className="mt-5 flex items-center gap-3 text-[15px] text-secondary"
+  >
+    <IoLocationOutline className="w-5 h-5" />
+    <span>Delhi, India</span>
+  </motion.div>
+</motion.div>
 
           {/* Right - Services Grid */}
+
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="grid sm:grid-cols-2 gap-4"
+            animate="visible"
+            className="grid sm:grid-cols-2 gap-4 mt-10 lg:mt-20"
           >
             {services.map((card) => (
               <motion.div

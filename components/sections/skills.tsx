@@ -44,8 +44,7 @@ export function Skills() {
         {/* SECTION HEADER */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="mb-16 text-center"
           >
@@ -68,12 +67,11 @@ export function Skills() {
             <motion.div
               key={category.title}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.5,
                 ease: [0.25, 0.1, 0, 1] as const,
-                delay: index * 0.08,
+                delay: 0.15 + index * 0.08,
               }}
               className="group relative flex flex-col p-6 rounded-[28px] bg-white border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default"
             >

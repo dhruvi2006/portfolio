@@ -13,8 +13,8 @@ import {
   IoLogoLinkedin,
   IoLogoGithub,
   IoLogoInstagram,
-  IoLogoTwitter,
 } from "react-icons/io5";
+import { SiX } from "react-icons/si";
 import { cn } from "@/lib/utils";
 
 interface ContactCard {
@@ -63,7 +63,7 @@ const socialLinks = [
   },
   {
     label: "X",
-    icon: IoLogoTwitter,
+    icon: SiX,
     href: "https://x.com/dhruvi_mit",
   },
 ];
@@ -177,8 +177,7 @@ export function Contact() {
         {/* SECTION HEADER */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
@@ -200,9 +199,8 @@ export function Contact() {
           {/* ======================== */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const, delay: 0.1 }}
           >
             {/* Contact Info Cards */}
             <div className="space-y-3">
@@ -226,14 +224,16 @@ export function Contact() {
                     </p>
                   </div>
 
-                  {/* Copy Button */}
-                  <button
-                    onClick={() => handleCopy(card.copyValue, card.label)}
-                    className="w-9 h-9 rounded-lg border border-zinc-200 flex items-center justify-center hover:bg-zinc-100 transition-colors duration-200 shrink-0 cursor-pointer"
-                    aria-label={`Copy ${card.label}`}
-                  >
-                    <IoCopyOutline className="w-4 h-4 text-zinc-400" />
-                  </button>
+                  {/* Copy Button — not shown for Location */}
+                  {card.label !== "Location" && (
+                    <button
+                      onClick={() => handleCopy(card.copyValue, card.label)}
+                      className="w-9 h-9 rounded-lg border border-zinc-200 flex items-center justify-center hover:bg-zinc-100 transition-colors duration-200 shrink-0 cursor-pointer"
+                      aria-label={`Copy ${card.label}`}
+                    >
+                      <IoCopyOutline className="w-4 h-4 text-zinc-400" />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -282,9 +282,8 @@ export function Contact() {
           {/* ======================== */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const, delay: 0.2 }}
           >
             <div className="p-8 sm:p-10 rounded-2xl border border-zinc-200 bg-white">
               <h3 className="text-xl font-semibold tracking-tight text-zinc-900 mb-6">

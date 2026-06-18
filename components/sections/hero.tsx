@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useScrollState } from "@/components/scroll-context";
@@ -13,6 +12,7 @@ import {
   IoPeopleOutline,
 } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
+import { useResumeModal } from "@/hooks/useResumeModal";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -40,36 +40,26 @@ const itemVariants = {
 const MagneticButton = ({
   children,
   href,
+  onClick,
   variant = "primary",
 }: {
   children: React.ReactNode;
-  href: string;
+  href?: string;
+  onClick?: () => void;
   variant?: "primary" | "secondary" | "outline";
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    setPosition({ x: x * 0.3, y: y * 0.3 });
-  };
-
-  const handleMouseLeave = () => setPosition({ x: 0, y: 0 });
-
   return (
-    <div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="inline-block"
-    >
-      <motion.div
-        animate={{ x: position.x, y: position.y }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      >
+    <div className="inline-block">
+      {onClick ? (
+        <Button
+          variant={variant}
+          size="lg"
+          className="group cursor-pointer"
+          onClick={onClick}
+        >
+          {children}
+        </Button>
+      ) : (
         <a href={href}>
           <Button
             variant={variant}
@@ -79,7 +69,7 @@ const MagneticButton = ({
             {children}
           </Button>
         </a>
-      </motion.div>
+      )}
     </div>
   );
 };
@@ -99,6 +89,7 @@ export function Hero() {
   const { scrolledPast } = useScrollState();
   const { scrollY } = useScroll();
   const { toggleTheme } = useTheme();
+  const { openResume } = useResumeModal();
 
   // Synchronous threshold — matches scroll-context's 75vh check
   const threshold = typeof window !== "undefined" ? window.innerHeight * 0.75 : 600;
@@ -189,9 +180,9 @@ export function Hero() {
             >
               <MagneticButton href="#projects" variant="primary">
                 View Projects
-                <IoArrowForwardOutline className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <IoArrowForwardOutline className="w-4 h-4" />
               </MagneticButton>
-              <MagneticButton href="/resume.pdf" variant="secondary">
+              <MagneticButton onClick={openResume} variant="secondary">
                 <IoDocumentTextOutline className="w-4 h-4" />
                 Download Resume
               </MagneticButton>
@@ -238,7 +229,6 @@ export function Hero() {
                     }}
                     whileHover={{
                       filter: "grayscale(100%)",
-                      scale: 1.02,
                     }}
                     whileTap={{ scale: 0.98 }}
                     onClick={toggleTheme}

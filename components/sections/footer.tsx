@@ -39,7 +39,6 @@ export function Footer() {
 
           <motion.button
             onClick={scrollToTop}
-            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-1.5 text-xs text-secondary hover:text-foreground transition-colors duration-200 cursor-pointer"
             aria-label="Scroll to top"

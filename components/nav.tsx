@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { useScrollState } from "@/components/scroll-context";
+import { useResumeModal } from "@/hooks/useResumeModal";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -19,6 +20,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const { scrolledPast } = useScrollState();
+  const { openResume } = useResumeModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,12 +55,7 @@ export function Nav() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0, 1] as const }}
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white/70 dark:bg-black/70 backdrop-blur-xl border-b border-border/50 shadow-sm"
-          : "bg-transparent"
-      )}
+      className="fixed top-0 left-0 right-0 z-[9999] bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-[#E5E7EB] dark:border-[#27272a] shadow-sm transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
         <div
@@ -71,9 +68,8 @@ export function Nav() {
             href="#"
             className={cn(
               "text-lg font-semibold tracking-tight select-none transition-all duration-300",
-              scrolled ? "text-white" : "text-[#111111]"
+              "text-[#111111] dark:text-white"
             )}
-            whileHover={{ scale: 1.04 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             DM
@@ -91,14 +87,9 @@ export function Nav() {
                   className={cn(
                     "relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300",
                     isActive
-                      ? (scrolled ? "text-white" : "text-[#111111]")
-                      : (scrolled
-                        ? "text-white/70 hover:text-white"
-                        : "text-[#111111]/70 hover:text-[#111111]"
-                      ),
-                    scrolled
-                      ? "hover:bg-white/[0.08]"
-                      : "hover:bg-black/[0.04] dark:hover:bg-white/[0.06]"
+                      ? "text-[#111111] dark:text-white"
+                      : "text-[#111111]/70 hover:text-[#111111] dark:text-white/70 dark:hover:text-white",
+                    "hover:bg-black/[0.04] dark:hover:bg-white/[0.06]"
                   )}
                 >
                   <span className="relative z-10">{link.label}</span>
@@ -131,7 +122,6 @@ export function Nav() {
                   onClick={() => {
                     document.getElementById("hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }}
-                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   title="Scroll to top"
                 >
@@ -148,28 +138,23 @@ export function Nav() {
             </AnimatePresence>
 
             {/* Resume button — visible on md+ */}
-            <motion.a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.button
+              onClick={openResume}
               className={cn(
-                "hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300",
-                scrolled
-                  ? "text-white border-white/25 hover:border-white/50 hover:text-white"
-                  : "text-[#111111] border-[#111111]/20 hover:border-[#111111]/40 hover:text-[#111111]",
-                scrolled ? "hover:bg-white/10" : "hover:bg-accent/5"
+                "hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 cursor-pointer",
+                "text-[#111111] dark:text-white border border-[#111111]/20 dark:border-white/20 hover:border-[#111111]/40 dark:hover:border-white/40 hover:text-[#111111] dark:hover:text-white",
+                "hover:bg-accent/5 dark:hover:bg-accent/20"
               )}
-              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <IoDocumentTextOutline className="w-4 h-4" />
               <span>Resume</span>
-            </motion.a>
+            </motion.button>
 
             {/* Mobile menu */}
             <div className="md:hidden">
-              <MobileMenu navLinks={navLinks} handleClick={handleClick} scrolled={scrolled} />
+              <MobileMenu navLinks={navLinks} handleClick={handleClick} scrolled={scrolled} openResume={openResume} />
             </div>
           </div>
         </div>
@@ -182,10 +167,12 @@ function MobileMenu({
   navLinks,
   handleClick,
   scrolled,
+  openResume,
 }: {
   readonly navLinks: readonly { readonly label: string; readonly href: string }[];
   handleClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
   scrolled: boolean;
+  openResume: () => void;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -202,15 +189,15 @@ function MobileMenu({
         <div className="w-4 flex flex-col gap-1">
           <motion.span
             animate={open ? { rotate: 45, y: 2.5 } : { rotate: 0, y: 0 }}
-            className={cn("block h-px w-full transition-all duration-300", scrolled ? "bg-white" : "bg-[#111111]")}
+            className="block h-px w-full transition-all duration-300 bg-[#111111] dark:bg-white"
           />
           <motion.span
             animate={open ? { opacity: 0 } : { opacity: 1 }}
-            className={cn("block h-px w-full transition-all duration-300", scrolled ? "bg-white" : "bg-[#111111]")}
+            className="block h-px w-full transition-all duration-300 bg-[#111111] dark:bg-white"
           />
           <motion.span
             animate={open ? { rotate: -45, y: -2.5 } : { rotate: 0, y: 0 }}
-            className={cn("block h-px w-full transition-all duration-300", scrolled ? "bg-white" : "bg-[#111111]")}
+            className="block h-px w-full transition-all duration-300 bg-[#111111] dark:bg-white"
           />
         </div>
       </button>
@@ -239,16 +226,16 @@ function MobileMenu({
                 </a>
               ))}
               {/* Resume link in mobile */}
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-accent hover:bg-accent/5 rounded-xl transition-colors duration-150 border-t border-border/30 mt-1 pt-3"
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  openResume();
+                }}
+                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-accent hover:bg-accent/5 rounded-xl transition-colors duration-150 border-t border-border/30 mt-1 pt-3 w-full text-left cursor-pointer"
               >
                 <IoDocumentTextOutline className="w-4 h-4" />
                 <span>Resume</span>
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

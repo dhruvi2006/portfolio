@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
+import { useResumeModal } from "@/hooks/useResumeModal";
 
 const experiences = [
   {
@@ -64,6 +65,7 @@ const itemVariants = {
 };
 
 export function Experience() {
+  const { openResume } = useResumeModal();
   return (
     <section id="experience" className="relative py-32 md:py-40 overflow-hidden">
       {/* Subtle dotted grid background */}
@@ -81,8 +83,7 @@ export function Experience() {
     {/* Left Panel */}
     <motion.div
       initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.25, 0.1, 0, 1] as const }}
       className="lg:w-[26%] lg:flex-shrink-0 mb-20 lg:mb-0"
     >
@@ -103,16 +104,15 @@ export function Experience() {
       </p>
 <div className="absolute left-[505px] top-3 bottom-5 w-px bg-border" />
       <div className="mt-12">
-        <a href="/resume.pdf">
-          <Button
-            variant="secondary"
-            size="md"
-            className="group cursor-pointer"
-          >
-            <IoDocumentTextOutline className="w-4 h-4" />
-            Download Resume
-          </Button>
-        </a>
+        <Button
+          variant="secondary"
+          size="md"
+          className="group cursor-pointer"
+          onClick={openResume}
+        >
+          <IoDocumentTextOutline className="w-4 h-4" />
+          Download Resume
+        </Button>
       </div>
     </motion.div>
 
@@ -120,8 +120,7 @@ export function Experience() {
     <motion.div
       variants={containerVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+      animate="visible"
       className="flex-1 min-w-0"
     >
       <div className="relative">

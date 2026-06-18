@@ -5,75 +5,104 @@ import { motion } from "framer-motion";
 const highlights = [
   {
     metric: "15+",
-    label: "Projects Delivered",
-    description: "Production applications shipped across web, mobile, and AI.",
+    label: "Projects Shipped",
+    description:
+      "Production-ready web and mobile applications shipped to real users",
   },
   {
     metric: "4+",
-    label: "Organizations Worked With",
-    description: "From startups to established companies.",
+    label: "Clients & Partners",
+    description:
+      "Built digital foundations from early-stage startups to established trade companies",
   },
   {
-    metric: "Multiple",
+    metric: "10+",
     label: "Production Deployments",
-    description: "Live applications serving real users.",
+    description:
+      "Reliable systems deployed across cloud platforms with continuous iteration",
   },
   {
-    metric: "Web • Mobile • AI",
-    label: "Expertise",
-    description: "End-to-end software engineering and deployment.",
+    metric: "Full-Stack",
+    label: "AI/ML Expertise",
+    description:
+      "Full-stack capabilities spanning frontend, backend, AI integrations, and mobile",
   },
 ];
 
 export function ExperienceHighlights() {
   return (
-    <section className="py-24 bg-black overflow-hidden">
-      <div className="max-w-[1280px] mx-auto px-6">
-        {/* SECTION HEADER */}
+    <section className="relative bg-black py-14 overflow-hidden">
+      {/* Dot Grid Background */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+          backgroundSize: "28px 28px",
+        }}
+      />
+
+      <div className="relative max-w-[1200px] mx-auto px-3">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-14"
+          className="mb-8"
         >
-          <span className="block text-[13px] tracking-[0.25em] uppercase font-semibold text-zinc-500">
-            Impact
-          </span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-white/10 bg-white/[0.02] mb-2">
+            <span className="text-[#2563eb] text-sm">✦</span>
+
+            <span className="text-[11px] uppercase tracking-[0.15em] text-zinc-500 font-medium">
+              Track Record
+            </span>
+          </div>
+
+          <h2 className="text-[30px] leading-none font-bold tracking-[-0.04em] text-white">
+            Experience Highlights
+          </h2>
         </motion.div>
 
-        {/* STATS GRID */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {highlights.map((item, index) => (
             <motion.div
               key={item.label}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.5,
-                ease: [0.25, 0.1, 0, 1] as const,
-                delay: index * 0.1,
+                delay: 0.15 + index * 0.08,
               }}
-              className="group relative p-8 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_0_24px_-4px_rgba(255,255,255,0.08)]"
+              className="
+                relative
+                min-h-[190px]
+                p-5
+                border
+                border-white/10
+                bg-[#0d0d0d]
+                overflow-hidden
+              "
             >
+              {/* Blue Left Accent */}
+              <div className="absolute left-0 top-0 w-[3px] h-full bg-[#1d4ed8]" />
+
               {/* Metric */}
-              <div className="text-6xl font-semibold tracking-tight text-white mb-3">
-                {item.metric}
+              <div className="mb-5">
+                <h3 className="text-[35px] leading-none font-bold tracking-tight text-white">
+                  {item.metric}
+                </h3>
               </div>
 
-              {/* Title */}
-              <h3 className="text-xl font-medium text-white/80 mb-2">
+              {/* Label */}
+              <h4 className="text-[16px] font-semibold text-white mb-3">
                 {item.label}
-              </h3>
+              </h4>
 
               {/* Description */}
-              <p className="text-sm text-zinc-400 leading-relaxed max-w-xs">
+              <p className="text-[16px] leading-8 text-zinc-500">
                 {item.description}
               </p>
-
-              {/* Subtle top-right glow on hover */}
-              <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-3xl" />
             </motion.div>
           ))}
         </div>

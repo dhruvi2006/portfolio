@@ -25,7 +25,7 @@ interface Project {
 const projects: Project[] = [
   {
     title: "FSK Foil Products",
-    category: "Manufacturing",
+    category: "Web & E-Commerce",
     description:
       "Digital platform for FSK Foil Products showcasing manufacturing capabilities, product catalog, and client management system.",
     technologies: ["React", "Firebase", "Tailwind", "Node.js"],
@@ -43,7 +43,7 @@ const projects: Project[] = [
   },
   {
     title: "Ridezo",
-    category: "Transportation",
+    category: "Web & E-Commerce",
     description:
       "Ride-sharing and transportation platform with real-time tracking, fare estimation, and driver management features.",
     technologies: ["React Native", "Expo", "Firebase", "Google Maps API"],
@@ -61,7 +61,7 @@ const projects: Project[] = [
   },
   {
     title: "Forkup",
-    category: "FoodTech",
+    category: "Web & E-Commerce",
     description:
       "Food discovery and ordering platform connecting users with local restaurants, featuring smart recommendations and order tracking.",
     technologies: ["React Native", "Expo", "Node.js", "MongoDB"],
@@ -79,7 +79,7 @@ const projects: Project[] = [
   },
   {
     title: "Lubeck Elevators Ecosystem",
-    category: "Enterprise",
+    category: "Web & E-Commerce",
     description:
       "Complete digital ecosystem for Lubeck Elevators including client portals, admin dashboards, and service management systems.",
     technologies: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind"],
@@ -97,7 +97,7 @@ const projects: Project[] = [
   },
   {
     title: "Lubeck Exports Commerce",
-    category: "E-Commerce",
+    category: "Web & E-Commerce",
     description:
       "Full-featured e-commerce platform for Lubeck Exports with inventory management, order processing, and international shipping integration.",
     technologies: ["React", "Node.js", "MongoDB", "Stripe"],
@@ -115,7 +115,7 @@ const projects: Project[] = [
   },
   {
     title: "Smart Ethnics",
-    category: "E-Commerce",
+    category: "Web & E-Commerce",
     description:
       "Modern e-commerce platform for ethnic wear with AI-powered recommendations, size prediction, and seamless shopping experience.",
     technologies: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
@@ -133,7 +133,7 @@ const projects: Project[] = [
   },
   {
     title: "MiAssured",
-    category: "Healthcare",
+    category: "AI & Healthcare",
     description:
       "A comprehensive healthcare platform connecting patients with medical services, featuring appointment scheduling, telemedicine, and health record management.",
     technologies: ["Next.js", "TypeScript", "FastAPI", "PostgreSQL"],
@@ -151,7 +151,7 @@ const projects: Project[] = [
   },
   {
     title: "IPD Now",
-    category: "Healthcare",
+    category: "Mobile Apps",
     description:
       "In-patient department management system streamlining hospital admissions, bed management, and patient care coordination with real-time updates.",
     technologies: ["React Native", "Expo", "Firebase", "Node.js"],
@@ -168,32 +168,14 @@ const projects: Project[] = [
       "Hospitals lacked a unified system for managing in-patient departments. Bed allocation, admissions, and doctor assignments were handled manually, leading to delays and miscommunication.",
   },
   {
-    title: "Dr Healio",
-    category: "HealthTech",
-    description:
-      "AI-powered health assistant platform providing symptom analysis, health insights, and personalized wellness recommendations.",
-    technologies: ["Next.js", "OpenAI", "FastAPI", "MongoDB"],
-    image: null,
-    launchUrl: null,
-    features: [
-      "AI-powered symptom analysis and assessment",
-      "Personalized health and wellness insights",
-      "Secure patient data management",
-      "Integration with healthcare providers",
-    ],
-    highlights: ["AI-Powered", "HIPAA Compliant", "Personalized Care"],
-    challenge:
-      "Patients often struggled to understand their symptoms and navigate the healthcare system. Accessing reliable health insights before consulting a doctor was time-consuming and confusing.",
-  },
-  {
     title: "Zynced AI",
-    category: "MULTI-AGENT AI PLATFORM",
+    category: "AI & Healthcare",
     description:
       "AI workspace where multiple specialized agents collaborate to deliver more accurate and thoughtful responses.",
     description2:
       "Enhances response quality through collaborative AI reasoning, enabling deeper analysis, reduced hallucinations, and a more human-like problem-solving experience.",
     technologies: ["AI Agents", "LLMs", "Voice Interface", "Automation Engine", "+1 more"],
-    image: null,
+    image: "/projects/zync.png",
     launchUrl: "https://zynced.chat",
     features: [
       "Multi-agent collaborative AI workspace",
@@ -220,15 +202,14 @@ function ProjectCard({
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
         "group flex flex-col h-full p-6 rounded-2xl",
         "bg-white border border-zinc-100",
-        "shadow-sm hover:shadow-lg hover:-translate-y-0.5",
+        "shadow-sm hover:shadow-lg",
         "transition-all duration-300 cursor-default"
       )}
     >
@@ -327,8 +308,16 @@ function ProjectCard({
   );
 }
 
+const FILTERS = ["All Projects", "AI & Healthcare", "Web & E-Commerce", "Mobile Apps"] as const;
+
 export function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>("All Projects");
+
+  const filteredProjects =
+    activeFilter === "All Projects"
+      ? projects
+      : projects.filter((p) => p.category === activeFilter);
 
   return (
     <section id="projects" className="py-20 bg-[#f7f7f7]">
@@ -336,8 +325,7 @@ export function Projects() {
         {/* SECTION HEADER — single horizontal row */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
@@ -351,38 +339,44 @@ export function Projects() {
                 Selected Projects
               </h2>
               <p className="mt-2 max-w-xl text-base text-zinc-500 leading-relaxed">
-                Shipped products solving healthcare, logistics, and operational
-                challenges.
+                AI, web, and mobile solutions built for real-world impact.
               </p>
             </div>
 
             {/* Right — filter buttons */}
             <div className="flex gap-2.5 flex-wrap shrink-0">
-              <button className="h-10 px-4 rounded-lg bg-zinc-900 text-white text-sm font-medium whitespace-nowrap transition-colors hover:bg-zinc-800">
-                All Projects
-              </button>
-              <button className="h-10 px-4 rounded-lg border border-zinc-200 text-zinc-500 text-sm font-medium whitespace-nowrap transition-colors hover:border-zinc-300 hover:text-zinc-700">
-                AI &amp; Healthcare
-              </button>
-              <button className="h-10 px-4 rounded-lg border border-zinc-200 text-zinc-500 text-sm font-medium whitespace-nowrap transition-colors hover:border-zinc-300 hover:text-zinc-700">
-                Web &amp; E-Commerce
-              </button>
-              <button className="h-10 px-4 rounded-lg border border-zinc-200 text-zinc-500 text-sm font-medium whitespace-nowrap transition-colors hover:border-zinc-300 hover:text-zinc-700">
-                Mobile Apps
-              </button>
+              {FILTERS.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`h-10 px-4 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                    activeFilter === filter
+                      ? "bg-zinc-900 text-white"
+                      : "border border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:text-zinc-700"
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
             </div>
           </div>
         </motion.div>
 
         {/* PROJECT GRID */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              onDetailsClick={setSelectedProject}
-            />
-          ))}
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <ProjectCard
+                key={project.title}
+                project={project}
+                onDetailsClick={setSelectedProject}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-16 text-zinc-400">
+              <p className="text-sm">No projects in this category yet.</p>
+            </div>
+          )}
         </div>
       </div>
 

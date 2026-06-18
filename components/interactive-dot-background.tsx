@@ -3,12 +3,7 @@
 import { useRef, useEffect } from "react";
 
 const GRID_SPACING = 16;
-const MOUSE_RADIUS = 120;
-
 const BASE_DOT_RADIUS = 0.6;
-
-const MAX_SCALE = 2.5;
-const MAX_OPACITY = 0.5;
 
 const IDLE_OPACITY_LIGHT = 0.04;
 const IDLE_OPACITY_DARK = 0.02;
@@ -32,12 +27,6 @@ export function InteractiveDotBackground() {
     const ctx = context;
 
     let dots: Dot[] = [];
-    let mouseX = -1000;
-    let mouseY = -1000;
-    let animationFrame = 0;
-    let width = 0;
-    let height = 0;
-    let interactive = false;
 
     const isDark = () =>
       document.documentElement.classList.contains("dark");
@@ -49,8 +38,8 @@ export function InteractiveDotBackground() {
       isDark() ? IDLE_OPACITY_DARK : IDLE_OPACITY_LIGHT;
 
     function buildGrid() {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
 
       const dpr = window.devicePixelRatio || 1;
 
@@ -75,85 +64,20 @@ export function InteractiveDotBackground() {
     }
 
     function draw() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
       ctx.clearRect(0, 0, width, height);
 
       const color = dotColor();
       const idle = idleOpacity();
 
       for (const dot of dots) {
-        const dx = dot.x - mouseX;
-        const dy = dot.y - mouseY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        let opacity = idle;
-        let scale = 1;
-
-        if (interactive && distance < MOUSE_RADIUS) {
-          const t = 1 - distance / MOUSE_RADIUS;
-          const reveal = t * t * (3 - 2 * t); // smoothstep — smooth, wide halo
-
-          opacity = idle + (MAX_OPACITY - idle) * reveal;
-          scale = 1 + (MAX_SCALE - 1) * reveal;
-        }
-
         ctx.beginPath();
-
-        ctx.arc(
-          dot.x,
-          dot.y,
-          BASE_DOT_RADIUS * scale,
-          0,
-          Math.PI * 2
-        );
-
-        ctx.fillStyle = `rgba(${color}, ${opacity})`;
+        ctx.arc(dot.x, dot.y, BASE_DOT_RADIUS, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${color}, ${idle})`;
         ctx.fill();
       }
-    }
-
-    function requestDraw() {
-      if (animationFrame) return;
-
-      animationFrame = requestAnimationFrame(() => {
-        draw();
-        animationFrame = 0;
-      });
-    }
-
-    function handleMouseMove(e: MouseEvent) {
-      if (!interactive) return;
-
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      requestDraw();
-    }
-
-    function handleMouseLeave() {
-      if (!interactive) return;
-
-      mouseX = -1000;
-      mouseY = -1000;
-      requestDraw();
-    }
-
-    function handleTouchMove(e: TouchEvent) {
-      if (!interactive) return;
-
-      const touch = e.touches[0];
-      if (!touch) return;
-
-      mouseX = touch.clientX;
-      mouseY = touch.clientY;
-
-      requestDraw();
-    }
-
-    function handleTouchEnd() {
-      if (!interactive) return;
-
-      mouseX = -1000;
-      mouseY = -1000;
-      requestDraw();
     }
 
     function handleResize() {
@@ -161,37 +85,15 @@ export function InteractiveDotBackground() {
       draw();
     }
 
-    function enableInteraction() {
-      if (interactive) return;
-
-      interactive = true;
+    function redraw() {
       draw();
-    }
-
-    function disableInteraction() {
-      if (!interactive) return;
-
-      interactive = false;
-      mouseX = -1000;
-      mouseY = -1000;
-      draw();
-    }
-
-    function syncInteraction() {
-      if (isDark()) {
-        enableInteraction();
-      } else {
-        disableInteraction();
-      }
     }
 
     buildGrid();
-    syncInteraction();
     draw();
 
     const observer = new MutationObserver(() => {
-      syncInteraction();
-      draw();
+      redraw();
     });
 
     observer.observe(document.documentElement, {
@@ -200,25 +102,10 @@ export function InteractiveDotBackground() {
     });
 
     window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove, {
-      passive: true,
-    });
-    window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("touchmove", handleTouchMove, {
-      passive: true,
-    });
-    window.addEventListener("touchend", handleTouchEnd);
 
     return () => {
-      cancelAnimationFrame(animationFrame);
-
       observer.disconnect();
-
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 

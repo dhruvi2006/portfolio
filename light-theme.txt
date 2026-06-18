@@ -1,0 +1,555 @@
+═══════════════════════════════════════════════════════════════
+  LIGHT THEME — Dhruvi Mittal Portfolio
+  Complete Color & Styling Reference
+═══════════════════════════════════════════════════════════════
+
+This document describes every color, variable, effect, and stylistic
+choice used in the light theme of dhruvi-portfolio.
+
+All values are the light-mode defaults. Dark mode overrides these via
+the .dark class on <html>.
+
+─── 1. CSS CUSTOM PROPERTIES (defined in @theme inline) ─────
+
+  --color-background:       #fafafa     (Near-white off-white)
+  --color-foreground:       #111111     (Near-black for primary text)
+  --color-secondary:        #666666     (Muted gray for body/secondary text)
+  --color-border:           #e5e7eb     (Light gray for borders)
+  --color-accent:           #2563eb     (Blue-600 — primary accent)
+  --color-accent-hover:     #1d4ed8     (Blue-700 — accent hover)
+  --color-accent-light:     #eff6ff     (Very light blue tint)
+  --color-card:             #ffffff     (Pure white card background)
+  --color-muted:            #f5f5f5     (Light gray for muted backgrounds)
+  --color-success:          #059669     (Emerald-600 for success states)
+
+  --font-sans:              var(--font-geist-sans)
+  --font-mono:              var(--font-geist-mono)
+
+  --radius-sm:              0.375rem
+  --radius-md:              0.5rem
+  --radius-lg:              0.75rem
+  --radius-xl:              1rem
+  --radius-2xl:             1.25rem
+
+─── 2. AMBIENT BACKGROUND GLOW (body::before) ───────────────
+
+  Two subtle radial gradients overlaid on the body:
+
+    1. Blue glow at top-left:
+       radial-gradient(ellipse at 20% 0%, rgba(37,99,235,0.04) 0%, transparent 60%)
+
+    2. Green glow at bottom-right:
+       radial-gradient(ellipse at 80% 100%, rgba(5,150,105,0.03) 0%, transparent 60%)
+
+─── 3. INTERACTIVE DOT BACKGROUND ────────────────────────────
+
+  An HTML5 Canvas draws a dot grid at 16px spacing.
+
+  Light mode settings (dark mode interaction is disabled in light):
+    - Base dot radius:      0.6px
+    - Idle opacity:         0.04  (rgba(0,0,0,0.04))
+    - Dot color:            "0,0,0"  (black)
+    - Interaction:          DISABLED (dots remain static in light mode)
+    - Mouse radius:         120px  (only used in dark mode)
+    - Max opacity (hover):  0.5    (only used in dark mode)
+    - Max scale (hover):    2.5    (only used in dark mode)
+
+─── 4. SELECTION & FOCUS ─────────────────────────────────────
+
+  ::selection
+    background:             #2563eb
+    color:                  #ffffff
+
+  *:focus-visible
+    outline:                2px solid #2563eb
+    outline-offset:         2px
+    border-radius:          4px
+
+─── 5. SCROLLBAR ─────────────────────────────────────────────
+
+  ::-webkit-scrollbar
+    width:                  8px
+
+  ::-webkit-scrollbar-track
+    background:             transparent
+
+  ::-webkit-scrollbar-thumb
+    background:             #d4d4d4
+    border-radius:          4px
+
+  ::-webkit-scrollbar-thumb:hover
+    background:             #a3a3a3
+
+─── 6. BASE BODY STYLES ─────────────────────────────────────
+
+  background-color:         var(--color-background)     (#fafafa)
+  color:                    var(--color-foreground)     (#111111)
+  font-family:              var(--font-geist-sans), system-ui, -apple-system, sans-serif
+  -webkit-font-smoothing:   antialiased
+  -moz-osx-font-smoothing:  grayscale
+
+─── 7. SECTION BACKGROUNDS ──────────────────────────────────
+
+  Hero (#hero):             transparent (default body bg #fafafa)
+  About (#about):           transparent (default body bg #fafafa)
+  Skills (#skills):         bg-white        (#ffffff)
+  Projects (#projects):     bg-[#f7f7f7]    (very light gray)
+  Experience (#experience): transparent (default body bg #fafafa)
+  Highlights:               bg-black        (#000000) — dark section always
+  Contact (#contact):       bg-white        (#ffffff)
+  Footer:                   transparent (default body bg #fafafa)
+
+─── 8. NAVIGATION ───────────────────────────────────────────
+
+  Not scrolled:
+    - Background:           bg-transparent
+    - Logo text:            text-[#111111]
+    - Nav link text:        text-[#111111]/70  → hover: text-[#111111]
+    - Nav link hover bg:    hover:bg-black/[0.04]
+    - Resume button:        text-[#111111] border-[#111111]/20
+                            hover:border-[#111111]/40 hover:bg-accent/5
+    - Hamburger bars:       bg-[#111111]
+    - Active indicator:     bg-accent (#2563eb)
+
+  Scrolled (past 75vh):
+    - Background:           bg-white/70 backdrop-blur-xl
+                            border-b border-border/50 shadow-sm
+    - Logo text:            text-white
+    - Nav link text:        text-white  → hover: text-white (already white)
+    - Nav link hover bg:    hover:bg-white/[0.08]
+    - Resume button:        text-white border-white/25
+                            hover:border-white/50 hover:bg-white/10
+    - Hamburger bars:       bg-white
+
+  Mobile Menu:
+    - Background:           bg-white/90 backdrop-blur-xl
+    - Border:               border-border/50
+    - Links:                text-secondary → hover:text-foreground hover:bg-muted/50
+    - Resume link:          text-accent hover:bg-accent/5
+                            border-t border-border/30
+
+─── 9. HERO SECTION ─────────────────────────────────────────
+
+  Status indicator:
+    - Text:                 text-secondary (#666666)
+    - Green ping dot:       bg-emerald-400/60 (ping ring)
+    - Green solid dot:      bg-emerald-500
+
+  Name heading:
+    - Text:                 text-foreground (#111111)
+
+  Decorative dash:
+    - bg-gradient-to-r from-foreground/40 to-transparent
+
+  Sub-headline:
+    - Text:                 text-secondary (#666666)
+
+  Detail bullet rows:
+    - Icon container:       bg-muted (#f5f5f5), w-8 h-8 rounded-lg
+    - Icon color:           text-foreground/60
+    - Label text:           text-secondary (#666666)
+
+  Tech stack tags:
+    - Background:           bg-muted (#f5f5f5)
+    - Text:                 text-secondary (#666666)
+    - Border:               border border-border/50 (#e5e7eb / 50%)
+
+  Portrait:
+    - Container:            border border-border (#e5e7eb), rounded-3xl
+    - On hover:             grayscale(100%), scale(1.02)
+    - Location text:        text-secondary (#666666)
+
+─── 10. ABOUT SECTION ───────────────────────────────────────
+
+  Stats Row (4 cards):
+    - Container:            border border-border (#e5e7eb)
+                            bg-card (#ffffff)
+                            rounded-2xl
+    - Hover:                shadow-sm -translate-y-0.5
+    - Icon box:             bg-muted (#f5f5f5) w-8 h-8 rounded-lg
+    - Icon:                 text-foreground/60
+    - Metric text:          text-foreground (#111111)
+    - Label text:           text-secondary (#666666)
+    - Description text:     text-secondary/60
+
+  Main content:
+    - Label ("About"):      text-secondary/60 (#666666 @ 60%)
+                            text-sm tracking-[0.35em] uppercase
+    - Heading:              text-foreground (#111111)
+                            text-[22px] sm:text-[60px] lg:text-[42px]
+                            font-bold tracking-[-0.04em]
+    - Body text:            text-secondary (#666666)
+                            text-[16px] leading-[1.75]
+    - Emphasized names:     text-foreground (#111111) font-semibold
+    - Location:             text-secondary (#666666)
+
+  Services Grid (right):
+    - Cards:                border border-border (#e5e7eb)
+                            bg-card (#ffffff)
+                            rounded-2xl
+    - Hover:                shadow-sm -translate-y-1
+    - Icon box:             bg-muted (#f5f5f5) w-10 h-10 rounded-xl
+    - Icon:                 text-foreground → group-hover:text-accent (#2563eb)
+    - Icon box hover:       group-hover:bg-accent/10
+    - Card title:           text-sm font-semibold text-foreground (#111111)
+    - Card description:     text-xs text-secondary (#666666)
+
+─── 11. SKILLS SECTION ──────────────────────────────────────
+
+  Background:               bg-white (#ffffff)
+
+  Header:
+    - Label ("Capabilities"): text-zinc-400 (#a1a1aa)
+    - Heading:               text-black (#000000)
+                              text-[52px] md:text-[72px] font-semibold
+    - Subtitle:              text-zinc-500 (#71717a)
+
+  Skill cards:
+    - Background:            bg-white (#ffffff)
+    - Border:                border-zinc-100 (#f4f4f5)
+    - Rounded:               rounded-[28px]
+    - Shadow:                shadow-sm → hover:shadow-xl
+    - Hover:                 -translate-y-1
+    - Watermark icon:        text-zinc-900 opacity-[0.04]
+    - Icon box:              bg-zinc-50 (#fafafa) w-10 h-10 rounded-xl
+    - Icon:                  text-zinc-600 → group-hover:text-accent (#2563eb)
+    - Icon box hover:        group-hover:bg-accent/10
+    - Card title:            text-zinc-900 (#18181b)
+    - Skill bullet dot:      bg-accent/50 (#2563eb @ 50%)
+    - Skill text:            text-zinc-500 (#71717a)
+
+─── 12. PROJECTS SECTION ────────────────────────────────────
+
+  Background:               bg-[#f7f7f7] (custom light gray)
+
+  Header:
+    - Label ("Work"):        text-zinc-400 (#a1a1aa)
+    - Heading:               text-zinc-900 (#18181b)
+    - Subtitle:              text-zinc-500 (#71717a)
+
+  Filter buttons:
+    - Inactive:              border border-zinc-200 text-zinc-500
+                             hover:border-zinc-300 hover:text-zinc-700
+                             rounded-lg, h-10 px-4
+    - Active:                bg-zinc-900 text-white
+    - Transition:            all 200ms
+
+  Project cards:
+    - Background:            bg-white (#ffffff)
+    - Border:                border-zinc-100 (#f4f4f5)
+    - Rounded:               rounded-2xl
+    - Shadow:                shadow-sm → hover:shadow-lg
+    - Hover:                 -translate-y-0.5
+    - Image placeholder:     bg-zinc-50 (#fafafa)
+
+    Category badge:          text-zinc-400 (#a1a1aa)
+                             text-[11px] tracking-[0.15em] uppercase
+
+    Title:                   text-zinc-900 (#18181b)
+                             text-xl font-semibold
+
+    Description:             text-zinc-500 (#71717a)
+                             text-sm leading-relaxed
+    Secondary desc:          text-zinc-400 (#a1a1aa)
+
+    Tech badges:
+      - Default:             border-zinc-100 text-zinc-500 bg-zinc-50
+      - "+1 more":           border-zinc-200 text-zinc-400 bg-zinc-50
+      - Active (project detail):
+                             border-accent/20 text-accent bg-accent/5
+      - Inactive (project detail):
+                             bg-muted border-border text-secondary
+
+    Card footer:
+      - Divider:             border-t border-zinc-100
+      - "Details" btn:       text-zinc-500 → hover:text-zinc-900
+      - Launch arrow:        bg-zinc-50 border-zinc-100
+                             hover:bg-zinc-900 hover:text-white
+
+  Empty state:
+    - Text:                  text-zinc-400 (#a1a1aa)
+
+─── 13. EXPERIENCE SECTION ───────────────────────────────────
+
+  Background:               transparent (body bg #fafafa)
+
+  Header:
+    - Label ("Experience"):  text-accent (#2563eb)
+    - Heading:               text-black (#000000)
+    - Accent line:           bg-accent (#2563eb), w-16 h-[3px] rounded-full
+    - Description:           text-secondary (#666666)
+
+  Timeline (left column):
+    - Vertical line:         bg-border (#e5e7eb)
+    - Dot:                   bg-accent (#2563eb) with 4px border-background (#fafafa)
+    - Year text:             text-secondary/70
+
+  Experience cards:
+    - Logo box:              border border-border (#e5e7eb)
+                             bg-background (#fafafa)
+                             rounded-2xl
+                             text-secondary (#666666)
+    - Company name:          text-black (#000000)
+                             text-2xl font-semibold
+                             group-hover:text-accent (#2563eb)
+    - Role:                  text-accent (#2563eb)
+                             text-base lg:text-sm font-medium
+    - Description:           text-secondary/80 (#666666 @ 80%)
+    - Divider:               bg-border/60 (#e5e7eb @ 60%)
+
+─── 14. EXPERIENCE HIGHLIGHTS (dark section, always black) ──
+
+  This section is ALWAYS dark regardless of theme.
+  Background:               bg-black (#000000)
+  Dot grid overlay:         radial-gradient(circle at 1px 1px, white 1px, transparent 0)
+                            opacity [0.03]
+  Badge:                    border-white/10 bg-white/[0.02]
+  Badge star:               text-[#2563eb]
+  Badge text:               text-zinc-500
+  Heading:                  text-white
+  Cards:
+    - Border:               border-white/10
+    - Background:           bg-[#0d0d0d]
+    - Left accent:          bg-[#1d4ed8] (3px wide)
+    - Metric:               text-white text-[35px] font-bold
+    - Label:                text-white text-[16px] font-semibold
+    - Description:          text-zinc-500
+
+─── 15. CONTACT SECTION ─────────────────────────────────────
+
+  Background:               bg-white (#ffffff)
+
+  Header:
+    - Label ("Contact"):    text-zinc-400 (#a1a1aa)
+    - Heading:              text-zinc-900 (#18181b)
+    - Subtitle:             text-zinc-500 (#71717a)
+
+  Contact info cards:
+    - Background:           bg-white (#ffffff)
+    - Border:               border-zinc-200 (#e4e4e7)
+                            hover:border-zinc-300 (#d4d4d8)
+    - Hover:                -translate-y-0.5 shadow-sm
+    - Icon box:             bg-zinc-50 (#fafafa) w-10 h-10 rounded-lg
+    - Icon:                 text-zinc-500 (#71717a)
+    - Label text:           text-zinc-400 (#a1a1aa)
+                            text-[11px] tracking-[0.12em] uppercase
+    - Value text:           text-zinc-800 (#27272a)
+    - Copy button:          border-zinc-200 hover:bg-zinc-100
+    - Copy icon:            text-zinc-400
+
+  Social links:
+    - Background:           bg-white (#ffffff)
+    - Border:               border-zinc-200 (#e4e4e7)
+    - Text:                 text-zinc-600 (#52525b)
+    - Hover fill:           brand colors (#0A66C2, #181717, #E1306C, #000000)
+    - Hover text:           text-white
+    - Transition:           left-to-right slide fill
+
+  Form:
+    - Container:            bg-white (#ffffff)
+                            border border-zinc-200 (#e4e4e7)
+                            rounded-2xl
+    - Title:                text-zinc-900 (#18181b)
+    - Labels:               text-zinc-400 (#a1a1aa)
+                            text-[11px] tracking-[0.12em] uppercase
+    - Input bg:             bg-white (#ffffff)
+    - Input border:         border-zinc-200 (#e4e4e7)
+                            focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400/20
+    - Input text:           text-zinc-900 (#18181b)
+    - Placeholder:          text-zinc-300 (#d4d4d4)
+    - Error border:         border-red-400 (#f87171)
+    - Submit button:        bg-black (#000000) text-white
+                            hover:bg-zinc-900 hover:-translate-y-0.5
+                            rounded-xl, h-14
+    - Success state:        bg-emerald-600 (#059669)
+
+─── 16. FOOTER ──────────────────────────────────────────────
+
+  Container:                border-t border-border (#e5e7eb)
+
+  Name:                     text-foreground (#111111)
+                            text-sm font-semibold
+
+  Location:                 text-secondary (#666666)
+                            text-xs
+
+  Social links:             text-secondary (#666666)
+                            hover:text-foreground (#111111)
+
+  Back to top:              text-secondary (#666666)
+                            hover:text-foreground (#111111)
+
+  Footer divider:           border-t border-border (#e5e7eb)
+
+  Copyright:                text-secondary/50 (#666666 @ 50%)
+                            text-[11px]
+
+─── 17. BUTTON VARIANTS (ui/button) ───────────────────────
+
+  Primary:
+    - Background:           bg-foreground (#111111)
+    - Text:                 text-background (#fafafa)
+    - Hover:                hover:bg-foreground/90
+    - Shadow:               shadow-sm hover:shadow-md
+
+  Secondary:
+    - Background:           bg-background (#fafafa)
+    - Text:                 text-foreground (#111111)
+    - Border:               border border-border (#e5e7eb)
+    - Hover:                hover:bg-muted (#f5f5f5) hover:border-foreground/20
+
+  Ghost:
+    - Text:                 text-secondary (#666666)
+    - Hover:                hover:text-foreground hover:bg-muted
+
+  Accent:
+    - Background:           bg-accent (#2563eb)
+    - Text:                 text-white
+    - Hover:                hover:bg-accent-hover (#1d4ed8)
+    - Shadow:               shadow-sm hover:shadow-md
+
+  Outline:
+    - Background:           bg-transparent
+    - Text:                 text-foreground (#111111)
+    - Border:               border border-border (#e5e7eb)
+    - Hover:                hover:border-accent hover:text-accent
+
+  Link:
+    - Text:                 text-accent (#2563eb)
+    - Hover:                hover:underline
+
+  Sizes:
+    sm:   h-9 px-4 text-xs gap-1.5 rounded-lg
+    md:   h-10 px-5 text-sm gap-2 rounded-xl
+    lg:   h-12 px-7 text-sm gap-2 rounded-xl
+    xl:   h-14 px-8 text-base gap-2.5 rounded-2xl
+    icon: h-10 w-10 rounded-xl
+
+─── 18. BADGE VARIANTS (ui/badge) ──────────────────────────
+
+  Default:
+    - Border:               border-border (#e5e7eb)
+    - Background:           bg-transparent
+    - Text:                 text-secondary (#666666)
+
+  Accent:
+    - Border:               border-accent/20 (#2563eb @ 20%)
+    - Background:           bg-accent-light (#eff6ff)
+    - Text:                 text-accent (#2563eb)
+
+  Outline:
+    - Border:               border-border (#e5e7eb)
+    - Text:                 text-foreground (#111111)
+
+─── 19. SEPARATOR (ui/separator) ───────────────────────────
+
+  Background:               bg-border (#e5e7eb)
+  Horizontal:               h-[1px] w-full
+  Vertical:                 h-full w-[1px]
+
+─── 20. RESUME MODAL ────────────────────────────────────────
+
+  Backdrop:                 bg-black/50 backdrop-blur-sm
+
+  Modal panel:
+    - Background:           bg-white (#ffffff)
+    - Rounded:              rounded-lg
+    - Shadow:               shadow-2xl
+    - Width:                85vw (max 1400px)
+    - Height:               90vh
+
+  Header bar:
+    - Background:           bg-white (#ffffff)
+    - Border bottom:        border-b border-gray-200 (#e5e7eb)
+    - Document icon bg:     bg-blue-50 (#eff6ff)
+    - Document icon:        text-blue-600 (#2563eb)
+    - File name:            text-gray-900 (#111827)
+    - File subtitle:        text-gray-400 (#9ca3af)
+    - Close button:         text-gray-400 hover:text-gray-600 hover:bg-gray-100
+
+  Document viewer:
+    - Background:           bg-gray-100 (#f3f4f6)
+    - Document bg:          bg-white (#ffffff)
+
+─── 21. PROJECT DETAIL MODAL ────────────────────────────────
+
+  Backdrop:                 bg-black/40 backdrop-blur-sm
+
+  Modal panel:
+    - Background:           bg-background (#fafafa)
+    - Border:               border border-border (#e5e7eb)
+    - Shadow:               shadow-2xl
+    - Max width:            max-w-2xl
+
+  Close button:
+    - Background:           bg-muted (#f5f5f5)
+    - Icon:                 text-secondary (#666666)
+
+  Back link:                text-secondary hover:text-foreground
+
+  Status badge:             text-accent (#2563eb)
+                            border-accent/20 bg-accent/5
+
+  Title:                    text-foreground (#111111)
+
+  Body text:                text-secondary (#666666)
+
+  Dividers:                 bg-border (#e5e7eb)
+
+  Feature bullet dot:       bg-accent (#2563eb), w-1.5 h-1.5 rounded-full
+
+─── 22. RESUME ACTIONS (DOWNLOAD/PRINT) ────────────────────
+
+  Download buttons:
+    - Background:           bg-white (#ffffff)
+    - Border:               border-gray-200 (#e5e7eb)
+    - Text:                 text-gray-700 (#374151)
+    - Hover background:     hover:bg-gray-50 (#f9fafb)
+    - Hover border:         hover:border-gray-300 (#d1d5db)
+
+─── QUICK REFERENCE — COMMON HEX VALUES ─────────────────────
+
+  #fafafa     background (body)
+  #ffffff     card, modal, section backgrounds (Skills, Contact)
+  #f7f7f7     Projects section bg
+  #f5f5f5     muted backgrounds
+  #eff6ff     accent-light (blue tint)
+  #e5e7eb     borders, separators
+  #111111     primary text (foreground)
+  #000000     heading text in Skills, Experience
+  #666666     secondary text
+  #2563eb     accent (blue-600)
+  #1d4ed8     accent hover (blue-700)
+  #059669     success (emerald-600)
+  #d4d4d4     scrollbar thumb
+  #a3a3a3     scrollbar thumb hover
+
+─── COMPONENT BORDER RADIUS USAGE ───────────────────────────
+
+  rounded-sm:      0.375rem  — tech badges
+  rounded-lg:      0.5rem    — icon boxes, filter buttons, copy buttons
+  rounded-xl:      0.75rem   — cards, inputs, buttons (md/lg), nav items
+  rounded-2xl:     1.25rem   — large buttons (xl), project cards, about cards,
+                                experience cards, contact container
+  rounded-[28px]:  1.75rem   — skills cards
+  rounded-3xl:     1.5rem    — hero portrait
+  rounded-full:    infinite  — badges, status dots, accent line
+
+─── BOX SHADOW USAGE ────────────────────────────────────────
+
+  shadow-sm:       default card state (projects, skills, about cards)
+  shadow-md:       primary/accent button hover
+  shadow-lg:       project card hover
+  shadow-xl:       skills card hover
+  shadow-2xl:      resume modal
+  ring-2:          nav logo (ring-2 ring-white/20)
+
+─── TRANSITION DURATIONS ───────────────────────────────────
+
+  All standard transitions:   200ms (duration-200)
+  Button transitions:         200ms (duration-200)
+  Card hover effects:         300ms (duration-300)
+  Theme mode switch:          300ms ease (body transition)
+  Mobile menu:                300ms
+  Focus ring:                 200ms
+═══════════════════════════════════════════════════════════════
