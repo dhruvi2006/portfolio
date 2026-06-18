@@ -133,7 +133,7 @@ export function Hero() {
             {/* Heading */}
             <motion.h1
               variants={itemVariants}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.9] text-foreground"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.9] text-foreground dark:text-white"
             >
               Dhruvi
               <br />
@@ -196,7 +196,7 @@ export function Hero() {
               {techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1 text-xs font-medium text-secondary bg-muted rounded-full border border-border/50"
+                  className="px-3 py-1 text-xs font-medium text-secondary bg-muted dark:bg-[#171717] rounded-full border border-border/50"
                 >
                   {tech}
                 </span>

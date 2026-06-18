@@ -90,8 +90,8 @@ export function ResumeActions({ contentRef }: ResumeActionsProps) {
     <div className="flex items-center gap-2">
       {/* Download count badge */}
       {downloadCount !== null && (
-        <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-gray-50 border border-gray-200 text-[11px] text-gray-500 whitespace-nowrap">
-          <span className="font-semibold text-gray-700">{downloadCount.toLocaleString()}</span>
+        <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-gray-50 dark:bg-[#171717] border border-gray-200 dark:border-[#262626] text-[11px] text-gray-500 dark:text-[#a1a1aa] whitespace-nowrap">
+          <span className="font-semibold text-gray-700 dark:text-[#fafafa]">{downloadCount.toLocaleString()}</span>
           <span>downloads</span>
         </div>
       )}

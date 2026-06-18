@@ -35,17 +35,17 @@ export function ResumeButton({
 
   if (variant === "secondary") {
     return (
-      <button
-        onClick={openResume}
-        className={cn(
-          "inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer",
-          "text-[#111111] border border-[#111111]/20 hover:border-[#111111]/40 hover:text-[#111111] hover:bg-accent/5",
-          className
-        )}
-      >
-        <IoDocumentTextOutline className="w-4 h-4" />
-        <span>Resume</span>
-      </button>
+    <button
+      onClick={openResume}
+      className={cn(
+        "inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer",
+        "text-[#111111] dark:text-[#fafafa] border border-[#111111]/20 dark:border-white/20 hover:border-[#111111]/40 dark:hover:border-white/40 hover:text-[#111111] dark:hover:text-[#fafafa] hover:bg-accent/5",
+        className
+      )}
+    >
+      <IoDocumentTextOutline className="w-4 h-4" />
+      <span>Resume</span>
+    </button>
     );
   }
 
