@@ -139,12 +139,12 @@ export function About() {
   </h2>
 
   {/* Content */}
-  <div className="space-y-7 text-[16px] leading-[1.75] text-secondary">
+<div className="space-y-7 text-[16px] leading-[1.75] text-secondary">
     <p>
       I am{" "}
-      <span className="font-semibold text-foreground">
-        Dhruvi Mittal
-      </span>
+<span className="font-bold text-black">
+  Dhruvi Mittal
+</span>
       , a Full-Stack Developer and AI Engineer currently pursuing a{" "}
       <span className="font-semibold text-foreground">
         Bachelor of Computer Applications (BCA)

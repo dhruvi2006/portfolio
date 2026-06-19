@@ -172,7 +172,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-28 bg-white dark:bg-[#0f0f0f]">
+    <section id="contact" className="py-28 bg-white dark:bg-black min-h-screen w-full">
       <div className="max-w-7xl mx-auto px-6">
         {/* SECTION HEADER */}
         <motion.div
@@ -228,6 +228,7 @@ export function Contact() {
                   {card.label !== "Location" && (
                     <button
                       onClick={() => handleCopy(card.copyValue, card.label)}
+                      
                       className="w-9 h-9 rounded-lg border border-zinc-200 flex items-center justify-center hover:bg-zinc-100 transition-colors duration-200 shrink-0 cursor-pointer"
                       aria-label={`Copy ${card.label}`}
                     >
@@ -285,7 +286,7 @@ export function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.25, 0.1, 0, 1] as const, delay: 0.2 }}
           >
-            <div className="p-8 sm:p-10 rounded-2xl border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#171717]">
+            <div className="p-8 sm:p-10 bg-white rounded-2xl border border-zinc-200 dark:border-[#262626] dark:bg-[#171717]">
               <h3 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-[#fafafa] mb-6">
                 Send a Message
               </h3>
@@ -366,12 +367,12 @@ export function Contact() {
                   type="submit"
                   disabled={isSubmitting}
                   className={cn(
-                    "w-full h-14 rounded-xl bg-black dark:bg-white text-white dark:text-black text-sm font-medium",
+                    "w-full h-14 rounded-xl bg-black text-white dark:text-white text-sm font-medium",
                     "flex items-center justify-center gap-2.5",
                     "transition-all duration-300",
                     isSubmitting
                       ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-zinc-900 dark:hover:bg-zinc-100 hover:-translate-y-0.5 cursor-pointer",
+                      : "hover:bg-zinc-900 hover:-translate-y-0.5 cursor-pointer",
                     isSubmitted && "bg-emerald-600 hover:bg-emerald-600"
                   )}
                 >
