@@ -1,18 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState, type RefObject } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   IoDownloadOutline,
 } from "react-icons/io5";
-import { toCanvas } from "html-to-image";
-import jsPDF from "jspdf";
 
-interface ResumeActionsProps {
-  contentRef: RefObject<HTMLDivElement | null>;
-}
-
-export function ResumeActions({ contentRef }: ResumeActionsProps) {
-  const [exporting, setExporting] = useState(false);
+export function ResumeActions() {
   const [downloaded, setDownloaded] = useState(false);
   const [downloadCount, setDownloadCount] = useState<number | null>(null);
 
@@ -25,46 +18,15 @@ export function ResumeActions({ contentRef }: ResumeActionsProps) {
   }, []);
 
   const handleDownloadPDF = useCallback(async () => {
-    if (!contentRef.current || exporting) return;
-
-    setExporting(true);
     try {
-      const element = contentRef.current;
+      // Download the PDF file from the public directory
+      const link = document.createElement("a");
+      link.href = "/Dhruvi%20mittal.pdf";
+      link.download = "Dhruvi_Mittal_Resume.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-      const page1El = element.querySelector<HTMLElement>("#page-1");
-      const page2El = element.querySelector<HTMLElement>("#page-2");
-
-      if (!page1El || !page2El) {
-        throw new Error("Page elements not found");
-      }
-
-      // Capture each page independently using html-to-image
-      const [canvas1, canvas2] = await Promise.all([
-        toCanvas(page1El, {
-          pixelRatio: 2,
-          backgroundColor: "#ffffff",
-        }),
-        toCanvas(page2El, {
-          pixelRatio: 2,
-          backgroundColor: "#ffffff",
-        }),
-      ]);
-
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = 210;
-
-      // Page 1
-      const imgData1 = canvas1.toDataURL("image/png");
-      const pdfHeight1 = (canvas1.height * pdfWidth) / canvas1.width;
-      pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight1);
-
-      // Page 2
-      pdf.addPage();
-      const imgData2 = canvas2.toDataURL("image/png");
-      const pdfHeight2 = (canvas2.height * pdfWidth) / canvas2.width;
-      pdf.addImage(imgData2, "PNG", 0, 0, pdfWidth, pdfHeight2);
-
-      pdf.save("Dhruvi_Mittal_Resume.pdf");
       setDownloaded(true);
       setTimeout(() => setDownloaded(false), 2000);
 
@@ -77,11 +39,9 @@ export function ResumeActions({ contentRef }: ResumeActionsProps) {
         console.warn("Failed to increment download count");
       }
     } catch (err) {
-      console.error("PDF export failed:", err);
-    } finally {
-      setExporting(false);
+      console.error("Download failed:", err);
     }
-  }, [contentRef, exporting]);
+  }, []);
 
   const btnBase =
     "inline-flex items-center gap-1.5 h-8 px-3 rounded-md text-sm font-medium transition-all duration-150 cursor-pointer";
@@ -99,14 +59,11 @@ export function ResumeActions({ contentRef }: ResumeActionsProps) {
       {/* Download PDF */}
       <button
         onClick={handleDownloadPDF}
-        disabled={exporting}
-        className={`${btnBase} bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed`}
+        className={`${btnBase} bg-blue-600 text-white hover:bg-blue-700`}
       >
         <IoDownloadOutline className="w-3.5 h-3.5" />
-        <span>{exporting ? "Exporting…" : downloaded ? "Downloaded!" : "Download"}</span>
+        <span>{downloaded ? "Downloaded!" : "Download"}</span>
       </button>
-
-
     </div>
   );
 }
