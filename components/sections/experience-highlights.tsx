@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const highlights = [
   {
-    metric: "15+",
+    metric: "16+",
     label: "Projects Shipped",
     description:
       "Production-ready web and mobile applications shipped to real users",
