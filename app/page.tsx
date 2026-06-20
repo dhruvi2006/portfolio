@@ -11,7 +11,7 @@ import { Footer } from "@/components/sections/footer";
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-x-hidden">
       <Hero />
       <About />
       <Experience />
