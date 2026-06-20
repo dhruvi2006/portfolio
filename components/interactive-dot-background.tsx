@@ -115,6 +115,7 @@ export function InteractiveDotBackground() {
       className="fixed inset-0 pointer-events-none"
       style={{ zIndex: -1 }}
       aria-hidden="true"
+      
     />
   );
 }
